@@ -10,13 +10,15 @@ import time
 import os
 from bs4 import BeautifulSoup
 from typing import List, NoReturn
+from dotenv import load_dotenv
 
 
 class Movie():
     ''' 電影類別 '''
 
     def __init__(self):
-        self.basedir = os.path.abspath(os.path.dirname(__file__))
+        load_dotenv()
+        self.api_key = os.environ.get('API_KEY')
 
     def get_url_datas(self, url : str) -> requests:
         ''' 獲得 url 的資料 '''
@@ -28,7 +30,7 @@ class Movie():
         
         return response
 
-    def get_imdb_datas(self, url : str, item_limit : int = None, api_key :str = None) -> List[tuple]:
+    def get_imdb_datas(self, url : str, item_limit : int = None) -> List[dict]:
         ''' 獲得 imdb 電影資料 '''
 
         response = self.get_url_datas(url)
@@ -41,19 +43,22 @@ class Movie():
         for movie_item in movie_items:
             title = movie_item.find('td', class_ = 'titleColumn').find('a').text
             imdb_id = movie_item.find('td', class_ = 'titleColumn').find('a').get('href').split('/')[2]
-            tmdb_id = self.get_tmdb_id(imdb_id, api_key) if api_key else None
-            item_list.append( (imdb_id, tmdb_id, title ))
-
+            tmdb_id = self.get_tmdb_id(imdb_id) if self.api_key else None
+            item_list.append({
+                'imdb_id' : imdb_id,
+                'tmdb_id' : tmdb_id,
+                'title' : title
+            })
             print(title)
             time.sleep(0.5)
         
         return item_list
 
 
-    def get_tmdb_id(self, imdb_id : str, api_key : str) -> int:
+    def get_tmdb_id(self, imdb_id : str) -> int:
         ''' 根據 imdb id 獲得 tmdb 電影 id '''
 
-        url = f'https://api.themoviedb.org/3/movie/{imdb_id}/external_ids?api_key={api_key}'
+        url = f'https://api.themoviedb.org/3/movie/{imdb_id}/external_ids?api_key={self.api_key}'
         response = self.get_url_datas(url)
         j = json.loads(response.text)
 
@@ -61,26 +66,53 @@ class Movie():
 
         return tmdb_id
 
-    
-    def make_imdb_datas_to_dict(self, imdb_datas : List[tuple]) -> List[dict]:
-        ''' 將從 imdb 獲取的電影資料轉換成 dict type '''
+    def get_movie_details(self, tmdb_id : int) -> dict:
+        ''' 由 tmdb api 獲得電影詳細資料 '''
 
-        if len(imdb_datas[0]) != 3:
-            return ' 資料格式錯誤，必須為 (imdb_id, tmdb_id, title) '
+        url_tw = f'https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={self.api_key}&language=zh-TW'
 
-        r = []
+        response_tw = self.get_url_datas(url_tw)
 
-        for data in imdb_datas:
-            imdb_id, tmdb_id, title = data
+        j_tw = json.loads(response_tw.text)
 
-            r.append({
-                'imdb_id' : imdb_id,
-                'tmdb_id' : tmdb_id,
-                'title' : title
-            })    
+        
+        r = {
+            'tmdb_id' : tmdb_id,
+            'backdrop_path' : j_tw['backdrop_path'],
+            'budget' : j_tw['budget'],
+            'genres' : list( i['name'] for i in j_tw['genres'] ),
+            'original_language' : j_tw['original_language'],
+            'original_title' : j_tw['original_title'],
+            'overview' : j_tw['overview'], 
+            'poster_path' : j_tw['poster_path'],
+            'release_date' : j_tw['release_date'],
+            'runtime' : j_tw['runtime'],
+            'status' : j_tw['status'],
+            'title' :  j_tw['title'],
+            'vote_average' : j_tw['vote_average'],
+        }
 
         return r
 
+            
+class PopularMovie(Movie):
+    ''' 熱門電影類別 '''
+
+    def __init__(self):
+        super().__init__()
+        self.url = 'https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm'
+
+    def get_imdb_datas(self, item_limit: int = None,) -> List[tuple]:
+        return super().get_imdb_datas(url = self.url, item_limit=item_limit)
+
+
+class File():
+    ''' 檔案處理類別 '''
+
+    def __init__(self):
+        self.basedir = os.path.abspath(os.path.dirname(__file__))
+
+    
     def output_json_file(self, datas : List[dict], file_path : str = None, file_name : str = None) -> NoReturn:
         ''' 將資料儲存成 json 檔 '''
         
@@ -99,20 +131,26 @@ class Movie():
         with open(file, 'w', encoding='utf-8') as f:
             json.dump(datas, f, indent=4)
 
-            
 
+    def input_json_file(self, file_name : str, file_path : str = None) -> List[dict]:
+        ''' 讀取 json 檔案並轉成 dict type '''
 
-class PopularMovie(Movie):
-    ''' 熱門電影類別 '''
+        f_path = file_path if file_path else self.basedir
 
-    def __init__(self):
-        super().__init__()
-        self.url = 'https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm'
+        file = os.path.join(f_path, file_name)
 
-    def get_imdb_datas(self, api_key : str = None, item_limit: int = None,) -> List[tuple]:
-        return super().get_imdb_datas(url = self.url, item_limit=item_limit, api_key=api_key)
+        if not os.path.exists(file):
+            print('錯誤!! 檔案不存在')
 
+        if not file.endswith('.json'):
+            print('錯誤!! 檔案副檔名必須是 .json')
+            return None
 
+        with open(file, 'r', encoding='utf-8') as f:
+            r =   json.load(f)
 
+        return r
 
+        
+        
 
