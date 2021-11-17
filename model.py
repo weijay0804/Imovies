@@ -75,6 +75,8 @@ class Movie():
 
         j_tw = json.loads(response_tw.text)
 
+        k = self.get_movie_video(tmdb_id)
+
         
         r = {
             'tmdb_id' : tmdb_id,
@@ -85,6 +87,7 @@ class Movie():
             'original_title' : j_tw['original_title'],
             'overview' : j_tw['overview'], 
             'poster_path' : j_tw['poster_path'],
+            'video_key' : k,
             'release_date' : j_tw['release_date'],
             'runtime' : j_tw['runtime'],
             'status' : j_tw['status'],
@@ -93,6 +96,26 @@ class Movie():
         }
 
         return r
+    
+    def get_movie_video(self, tmdb_id : int) -> List[str]:
+        ''' 取得電影預告片 key '''
+        
+        url_tw = f'https://api.themoviedb.org/3/movie/{tmdb_id}/videos?api_key={self.api_key}&language=zh-TW'
+
+        response = self.get_url_datas(url_tw)
+        j = json.loads(response.text)
+
+        k = list(i.get('key') for i in j.get('results'))
+
+        if not k:
+            url_en = f'https://api.themoviedb.org/3/movie/{tmdb_id}/videos?api_key={self.api_key}&language=en-US'
+            response = self.get_url_datas(url_en)
+            j = json.loads(response.text)
+
+            k = list(i.get('key') for i in j.get('results'))
+        
+        return k
+
 
             
 class PopularMovie(Movie):
