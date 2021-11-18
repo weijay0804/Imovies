@@ -80,6 +80,7 @@ class Movie():
         
         r = {
             'tmdb_id' : tmdb_id,
+            'imdb_id' : j_tw['imdb_id'],
             'backdrop_path' : j_tw['backdrop_path'],
             'budget' : j_tw['budget'],
             'genres' : list( i['name'] for i in j_tw['genres'] ),
