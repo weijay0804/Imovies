@@ -7,7 +7,6 @@
 import time
 from .model import PopularMovie, File
 from typing import NoReturn
-import json
 
 class Main():
     ''' 主程式 '''
@@ -22,7 +21,7 @@ class Main():
 
         r = self.popular.get_imdb_datas(item_limit=item_limt)
 
-        self.file.output_json_file(r, file_name='popular.json')
+        self.file.output_json_file(r,file_name='popular.json')
 
     def get_popular_movie_details(self, file_name : str) -> NoReturn:
         ''' 由 tmdb api 取得熱門電影詳細資料，並輸出 json '''
@@ -37,13 +36,15 @@ class Main():
 
             time.sleep(1)
 
-        self.file.output_json_file(r, file_name='popular_movie_details.json')
+        self.file.output_json_file(r,file_name='popular_movie_details.json')
 
 
 
 
 if __name__ == '__main__':
     main = Main()
+    main.get_popular_movies()
+    time.sleep(2)
     main.get_popular_movie_details('popular.json')
     
 

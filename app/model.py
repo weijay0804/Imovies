@@ -28,13 +28,46 @@ class Movies(db.Model):
     original_title = db.Column(db.Text)
     overview = db.Column(db.Text)
     poster_path = db.Column(db.String(40))
-    video_key = db.column(db.Text)
+    video_key = db.Column(db.Text)
     release_date = db.Column(db.Date)
     runtime = db.Column(db.Integer)
     status = db.Column(db.String(30))
     title = db.Column(db.Text)
     vote_average = db.Column(db.Float)
     insert_datetime = db.Column(db.DateTime, default = datetime.utcnow)
+
+    @staticmethod
+    def insert_datas():
+        ''' 將 json 資料寫入資料庫 '''
+
+        # 獲得資料庫中的資料，便於之後比對
+        movies = Movies.query.all()
+        tmdb_id_set = set(i.tmdb_id for i in movies)
+
+        # 開啟 json 檔案，檔案必須位於根目錄
+        file_name = os.path.join(Config.BASEDIR, 'popular_movie_details.json')
+        f = File()
+        datas = f.input_json_file(file_name)
+
+        # insert 資料到資料庫
+        for data in datas:
+            # 如果資料已經存在資料庫就跳過
+            if data['tmdb_id'] in tmdb_id_set:
+                continue
+            
+            data['genres'] = ','.join(data['genres'])
+            data['video_key'] = ','.join(data['video_key'])
+
+            try:
+                data['release_date'] = datetime.strptime(data['release_date'], "%Y-%m-%d")
+            except:
+                data['release_date'] = None
+            
+            m = Movies(**data)
+
+            db.session.add(m)
+        db.session.commit()
+
 
 class PopularMovies(db.Model):
     ''' 熱門電影資料 '''
@@ -49,7 +82,7 @@ class PopularMovies(db.Model):
 
     @staticmethod
     def insert_datas() -> NoReturn:
-        ''' 將 json 資料插入到資料庫 '''
+        ''' 將 json 資料寫入資料庫 '''
 
         # 獲得資料庫中的資料，便於之後比對
         movies = PopularMovies.query.all()
