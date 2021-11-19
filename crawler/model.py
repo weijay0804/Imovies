@@ -131,6 +131,16 @@ class PopularMovie(Movie):
         return super().get_imdb_datas(url = self.url, item_limit=item_limit)
 
 
+class TopRankMovies(Movie):
+
+    def __init__(self):
+        super().__init__()
+        self.url = 'https://www.imdb.com/chart/top/?ref_=nv_mv_250'
+
+    def get_imdb_datas(self, item_limit: int = None) -> List[dict]:
+        return super().get_imdb_datas(url = self.url, item_limit=item_limit)
+
+
 class File():
     ''' 檔案處理類別 '''
 

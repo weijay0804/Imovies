@@ -28,7 +28,9 @@ def crawling():
     main = Main()
     # main.get_popular_movies(output_file_name='popular.json')
     # time.sleep(2)
-    main.get_popular_movie_details('popular.json', 'popular_movies.json')
+    main.get_top_rank_movies('toprank.json')
+    main.get_top_rank_movie_details('toprank.json', 'toprank_movies.json')
+    # main.get_popular_movie_details('popular.json', 'popular_movies.json')
     
 
 
