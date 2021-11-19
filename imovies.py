@@ -10,7 +10,7 @@ import os
 import click
 from app import create_app, db
 from flask_migrate import Migrate
-from app.model import Movies, PopularMovies
+from app.model import Movies, PopularMovies, TopRankMoives
 from crawler.main import Main
 import time
 
@@ -20,7 +20,7 @@ migrate = Migrate(app, db)
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db = db, Movies = Movies, PopularMovies = PopularMovies)
+    return dict(db = db, Movies = Movies, PopularMovies = PopularMovies, TopRankMovies = TopRankMoives)
 
 
 @app.cli.command()

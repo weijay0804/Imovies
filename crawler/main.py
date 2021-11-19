@@ -8,6 +8,7 @@ import time
 from .model import PopularMovie, File, TopRankMovies
 from typing import NoReturn
 
+# TODO 重構程式碼
 class Main():
     ''' 主程式 '''
 

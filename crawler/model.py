@@ -87,7 +87,7 @@ class Movie():
             'genres' : list( i['name'] for i in j_tw['genres'] ),
             'original_language' : j_tw['original_language'],
             'original_title' : j_tw['original_title'],
-            'overview' : j_tw['overview'].replace('𝟐𝟎𝟒𝟗', '2049') if tmdb_id == 370172 else j_tw['overview'],   # FIXME 007 會有編碼問題
+            'overview' : j_tw['overview'].replace('𝟐𝟎𝟒𝟗', '2049') if tmdb_id == 370172 else j_tw['overview'], 
             'poster_path' : j_tw['poster_path'],
             'video_key' : k,
             'release_date' : j_tw['release_date'],

@@ -36,6 +36,7 @@ class Movies(db.Model):
     vote_average = db.Column(db.Float)
     insert_datetime = db.Column(db.DateTime, default = datetime.utcnow)
 
+    # TODO 重構程式碼
     @staticmethod
     def insert_datas():
         ''' 將 json 資料寫入資料庫 '''
@@ -45,7 +46,7 @@ class Movies(db.Model):
         tmdb_id_set = set(i.tmdb_id for i in movies)
 
         # 開啟 json 檔案，檔案必須位於根目錄
-        file_name = os.path.join(Config.BASEDIR, 'popular_movies.json')
+        file_name = os.path.join(Config.BASEDIR, 'toprank_movies.json')
         f = File()
         datas = f.input_json_file(file_name)
 
@@ -80,6 +81,7 @@ class PopularMovies(db.Model):
     title = db.Column(db.Text)
     insert_datetime = db.Column(db.DateTime, default = datetime.utcnow)
 
+    # TODO 重構程式碼
     @staticmethod
     def insert_datas() -> NoReturn:
         ''' 將 json 資料寫入資料庫 '''
@@ -100,6 +102,43 @@ class PopularMovies(db.Model):
                 continue
 
             m = PopularMovies(**data)
+
+            db.session.add(m)
+        db.session.commit()
+
+
+class TopRankMoives(db.Model):
+    ''' 熱門電影資料 '''
+
+    __tablename__ = 'toprankmovies'
+
+    id = db.Column(db.Integer, primary_key = True)
+    tmdb_id = db.Column(db.Integer, unique = True, index = True)
+    imdb_id = db.Column(db.String(15), unique = True)
+    title = db.Column(db.Text)
+    insert_datetime = db.Column(db.DateTime, default = datetime.utcnow)
+
+    # TODO 重構程式碼
+    @staticmethod
+    def insert_datas() -> NoReturn:
+        ''' 將 json 資料寫入資料庫 '''
+
+        # 獲得資料庫中的資料，便於之後比對
+        movies = TopRankMoives.query.all()
+        tmdb_id_set = set(i.tmdb_id for i in movies)
+
+        # 開啟 json 檔案，檔案必須位於根目錄
+        file_name = os.path.join(Config.BASEDIR, 'toprank.json')
+        f = File()
+        datas = f.input_json_file(file_name)
+
+        # insert 資料到資料庫
+        for data in datas:
+            # 如果資料已經存在資料庫就跳過
+            if data['tmdb_id'] in tmdb_id_set:
+                continue
+
+            m = TopRankMoives(**data)
 
             db.session.add(m)
         db.session.commit()
