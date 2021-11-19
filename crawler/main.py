@@ -23,10 +23,10 @@ class Main():
 
         self.file.output_json_file(r,file_name='popular.json')
 
-    def get_popular_movie_details(self, file_name : str) -> NoReturn:
+    def get_popular_movie_details(self) -> NoReturn:
         ''' 由 tmdb api 取得熱門電影詳細資料，並輸出 json '''
 
-        datas = self.file.input_json_file(file_name=file_name)
+        datas = self.file.input_json_file(file_name='popular.json')
         r = []
         for data in datas:
             tmdb_id = data['tmdb_id']
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     main = Main()
     main.get_popular_movies()
     time.sleep(2)
-    main.get_popular_movie_details('popular.json')
+    main.get_popular_movie_details()
     
 
 

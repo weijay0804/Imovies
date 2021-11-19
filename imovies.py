@@ -6,6 +6,8 @@
 '''
 
 import os
+
+import click
 from app import create_app, db
 from flask_migrate import Migrate
 from app.model import Movies, PopularMovies
@@ -26,7 +28,6 @@ def crawling():
     main = Main()
     main.get_popular_movies()
     time.sleep(2)
-    main.get_popular_movie_details('popular.json')
-    
-    
+    main.get_popular_movie_details()
+
 
