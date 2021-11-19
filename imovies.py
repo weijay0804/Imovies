@@ -26,8 +26,9 @@ def make_shell_context():
 @app.cli.command()
 def crawling():
     main = Main()
-    main.get_popular_movies()
-    time.sleep(2)
-    main.get_popular_movie_details()
+    # main.get_popular_movies(output_file_name='popular.json')
+    # time.sleep(2)
+    main.get_popular_movie_details('popular.json', 'popular_movies.json')
+    
 
 

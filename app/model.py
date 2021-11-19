@@ -45,7 +45,7 @@ class Movies(db.Model):
         tmdb_id_set = set(i.tmdb_id for i in movies)
 
         # 開啟 json 檔案，檔案必須位於根目錄
-        file_name = os.path.join(Config.BASEDIR, 'popular_movie_details.json')
+        file_name = os.path.join(Config.BASEDIR, 'popular_movies.json')
         f = File()
         datas = f.input_json_file(file_name)
 

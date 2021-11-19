@@ -16,17 +16,17 @@ class Main():
         self.popular = PopularMovie()
         
 
-    def get_popular_movies(self, item_limt : int = None) -> NoReturn:
+    def get_popular_movies(self, output_file_name : str,  item_limt : int = None) -> NoReturn:
         ''' 取得熱門電影資料，並輸出 json '''
 
         r = self.popular.get_imdb_datas(item_limit=item_limt)
 
-        self.file.output_json_file(r,file_name='popular.json')
+        self.file.output_json_file(r,file_name=output_file_name)
 
-    def get_popular_movie_details(self) -> NoReturn:
+    def get_popular_movie_details(self, movie_file_name : str, output_file_name : str) -> NoReturn:
         ''' 由 tmdb api 取得熱門電影詳細資料，並輸出 json '''
 
-        datas = self.file.input_json_file(file_name='popular.json')
+        datas = self.file.input_json_file(file_name=movie_file_name)
         r = []
         for data in datas:
             tmdb_id = data['tmdb_id']
@@ -34,19 +34,12 @@ class Main():
             r.append(movie_detail)
             print(tmdb_id)
 
-            time.sleep(1)
+            time.sleep(0.3)
 
-        self.file.output_json_file(r,file_name='popular_movie_details.json')
-
-
+        self.file.output_json_file(r,file_name=output_file_name)
 
 
-if __name__ == '__main__':
-    main = Main()
-    main.get_popular_movies()
-    time.sleep(2)
-    main.get_popular_movie_details()
-    
+
 
 
 
