@@ -1,6 +1,6 @@
 '''
 
-    app 資料庫模型
+    app 電影資料庫模型
 
 '''
 
@@ -11,7 +11,17 @@ from config import Config
 from typing import NoReturn
 import os
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+
+
+class BaseMovie():
+    ''' 基本 movie 資料庫類別 '''
+
+    @classmethod
+    def insert(cls, file : str) -> NoReturn:
+        ''' 將資料寫入資料庫 '''
+        pass
+
+
 
 class Movies(db.Model):
     ''' 電影資料 '''
@@ -38,7 +48,7 @@ class Movies(db.Model):
 
     # TODO 重構程式碼
     @staticmethod
-    def insert_datas():
+    def insert(file : str):
         ''' 將 json 資料寫入資料庫 '''
 
         # 獲得資料庫中的資料，便於之後比對
@@ -46,7 +56,7 @@ class Movies(db.Model):
         tmdb_id_set = set(i.tmdb_id for i in movies)
 
         # 開啟 json 檔案，檔案必須位於根目錄
-        file_name = os.path.join(Config.BASEDIR, 'toprank_movies.json')
+        file_name = os.path.join(Config.BASEDIR, file)
         f = File()
         datas = f.input_json_file(file_name)
 
@@ -69,6 +79,12 @@ class Movies(db.Model):
             db.session.add(m)
         db.session.commit()
 
+    @staticmethod
+    def update() -> NoReturn:
+        ''' 更新資料庫中的資料 '''
+        pass
+
+
 
 class PopularMovies(db.Model):
     ''' 熱門電影資料 '''
@@ -83,7 +99,7 @@ class PopularMovies(db.Model):
 
     # TODO 重構程式碼
     @staticmethod
-    def insert_datas() -> NoReturn:
+    def insert(file : str) -> NoReturn:
         ''' 將 json 資料寫入資料庫 '''
 
         # 獲得資料庫中的資料，便於之後比對
@@ -91,7 +107,7 @@ class PopularMovies(db.Model):
         tmdb_id_set = set(i.tmdb_id for i in movies)
 
         # 開啟 json 檔案，檔案必須位於根目錄
-        file_name = os.path.join(Config.BASEDIR, 'popular.json')
+        file_name = os.path.join(Config.BASEDIR, file)
         f = File()
         datas = f.input_json_file(file_name)
 
@@ -106,6 +122,10 @@ class PopularMovies(db.Model):
             db.session.add(m)
         db.session.commit()
 
+        print('OK')
+
+        
+
 
 class TopRankMoives(db.Model):
     ''' 熱門電影資料 '''
@@ -118,9 +138,8 @@ class TopRankMoives(db.Model):
     title = db.Column(db.Text)
     insert_datetime = db.Column(db.DateTime, default = datetime.utcnow)
 
-    # TODO 重構程式碼
     @staticmethod
-    def insert_datas() -> NoReturn:
+    def insert(file : str) -> NoReturn:
         ''' 將 json 資料寫入資料庫 '''
 
         # 獲得資料庫中的資料，便於之後比對
@@ -128,7 +147,7 @@ class TopRankMoives(db.Model):
         tmdb_id_set = set(i.tmdb_id for i in movies)
 
         # 開啟 json 檔案，檔案必須位於根目錄
-        file_name = os.path.join(Config.BASEDIR, 'toprank.json')
+        file_name = os.path.join(Config.BASEDIR, file)
         f = File()
         datas = f.input_json_file(file_name)
 
@@ -142,6 +161,9 @@ class TopRankMoives(db.Model):
 
             db.session.add(m)
         db.session.commit()
+
+        print('OK')
+        
         
 
     

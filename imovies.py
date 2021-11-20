@@ -9,7 +9,7 @@ import os
 import click
 from app import create_app, db
 from flask_migrate import Migrate
-from app.model import Movies, PopularMovies, TopRankMoives
+from app.movie_model import Movies, PopularMovies, TopRankMoives
 from crawler.main import Main
 import time
 
@@ -43,6 +43,23 @@ def crawling(type, limit, name, detail):
     if detail:
         time.sleep(1) # 先等待 1 秒，確保輸入的文件存在
         main.get_movie_details(movie_file_name=f'{name}.json', output_file_name=f'{name}_detail.json')
+
+@app.cli.command()
+@click.option('--database', '-db', 'db', help = 'insert to which database', required = True)
+@click.option('--file', '-f', 'file', help = 'which file you want to insert (without extension)', required = True)
+def insert(db, file):
+    ''' 寫入資料到資料庫 '''
+
+    if db == 'popular':
+        database = PopularMovies
+    if db == 'top':
+        database = TopRankMoives
+    if db == 'movies':
+        database = Movies
+
+    database.insert(file = f'{file}.json')
+    
+
 
 
 
