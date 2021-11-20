@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+    {{ super() }}
+    <link href="{{ url_for('static', filename = 'css/index.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+    <div class="page">
+        <div class="page-header">
+            <h2>推薦</h2> 
+        </div>
+        <div class="page-items">
+            {% for movie in movies %} 
+            <div class="card" style="width: 154px;">
+                <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h6 class="card-title">{{ movie.title }}</h6>
+                  <p class="card-text">{{ movie.release_date }}</p>
+                  <a href="#">
+                    <button type="button" class="btn btn-outline-info btn-sm">GO</button>
+                  </a>
+                </div>
+            </div>
+            {% endfor %}
+
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+.page-items{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.page-items .card{
+    height: 350px;
+    padding: 10px;
+    margin-right: 15px;
+    margin-top: 10px;
+}
+
+.page-items .card .card-body{
+    font-size: small;
+}
+
+.page-items .card .btn{
+    position: absolute;
+    top: 310px;
+    left: 10px;
+}
