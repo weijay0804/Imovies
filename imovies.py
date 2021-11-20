@@ -6,7 +6,6 @@
 '''
 
 import os
-
 import click
 from app import create_app, db
 from flask_migrate import Migrate
@@ -24,13 +23,29 @@ def make_shell_context():
 
 
 @app.cli.command()
-def crawling():
-    main = Main()
-    # main.get_popular_movies(output_file_name='popular.json')
-    # time.sleep(2)
-    main.get_top_rank_movies('toprank.json')
-    main.get_top_rank_movie_details('toprank.json', 'toprank_movies.json')
-    # main.get_popular_movie_details('popular.json', 'popular_movies.json')
-    
+@click.option('--type', '-t', 'type', help = 'type = popular or top', required = True)
+@click.option('--name', '-n',  'name', help = 'file name without extension', required = True)
+@click.option('--detail/--no-detail', default = True, help = 'is crawling movie detail datas')
+@click.option('--limit', '-l',  'limit', help = 'item limit', default = None)
+def crawling(type, limit, name, detail):
+    ''' 爬取 imdb 電影資料 '''
+
+    main = Main()   # 實例化
+
+    item_limit = int(limit) if limit else None  # 將型態由 str 轉為 int
+
+    if type == 'popular':
+        main.get_movies_datas(type='popular', item_limt=item_limit, output_file_name=f'{name}.json')
+    if type == 'top':
+        main.get_movies_datas(type='top', item_limt=item_limit, output_file_name=f'{name}.json')
+
+    # 爬取電影詳細資料
+    if detail:
+        time.sleep(1) # 先等待 1 秒，確保輸入的文件存在
+        main.get_movie_details(movie_file_name=f'{name}.json', output_file_name=f'{name}_detail.json')
+
+
+
+
 
 
