@@ -17,6 +17,13 @@
   >
   >* --database  -db  指定要寫入的資料庫 ( popular, top, movies)  **reqiured**
   >* --file  -f  要寫入的資料名稱 ( 不含附檔名 )  只接收 json 格式  **reuired**
+  
+* 更新資料庫的資料
+
+  >### flask update
+  >
+  >* --database  -db  指定要寫入的資料庫 ( popular, top, movies)  **reqiured**
+  >* --file  -f  要寫入的資料名稱 ( 不含附檔名 )  只接收 json 格式  **reuired**
 
 
 

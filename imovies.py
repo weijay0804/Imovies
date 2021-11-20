@@ -58,6 +58,21 @@ def insert(db, file):
         database = Movies
 
     database.insert(file = f'{file}.json')
+
+@app.cli.command()
+@click.option('--database', '-db', 'db', help = 'update which database', required = True)
+@click.option('--file', '-f', 'file', help = 'which file you want to update (without extension)', required = True)
+def update(db, file):
+    ''' 更新資料庫中的資料 '''
+
+    if db == 'popular':
+        database = PopularMovies
+    if db == 'top':
+        database = TopRankMoives
+    if db == 'movies':
+        database = Movies
+
+    database.update(file = f'{file}.json')
     
 
 
