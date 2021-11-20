@@ -41,6 +41,20 @@ class BaseMovie():
         db.session.commit()
         print('Done!')
 
+    @classmethod
+    def update(cls, file : str) -> NoReturn:
+        ''' 更新資料庫中的資料 '''
+
+        f = File()
+        datas = f.input_json_file(file_name=file, file_path=Config.BASEDIR)
+
+        for data in datas:
+            tmdb_id = data['tmdb_id']
+
+            cls.query.filter(cls.tmdb_id == tmdb_id).update(data)
+
+        db.session.commit()
+        print('Done! ')
 
 
 class Movies(db.Model):
@@ -100,9 +114,27 @@ class Movies(db.Model):
         print('Done!')
 
     @staticmethod
-    def update() -> NoReturn:
+    def update(file : str) -> NoReturn:
         ''' 更新資料庫中的資料 '''
-        pass
+        
+        f = File()
+        datas = f.input_json_file(file_path=Config.BASEDIR, file_name=file)
+
+        for data in datas[0:5]:
+            tmdb_id = data['tmdb_id']
+            data['genres'] = ','.join(data['genres'])
+            data['video_key'] = ','.join(data['video_key'])
+            try:
+                data['release_date'] = datetime.strptime(data['release_date'], "%Y-%m-%d")
+            except:
+                data['release_date'] = None
+            
+            Movies.query.filter(Movies.tmdb_id == tmdb_id).update(data)
+        
+        db.session.commit()
+        print('Done! ')
+
+
 
 
 
@@ -121,6 +153,10 @@ class PopularMovies(db.Model, BaseMovie):
     def insert(cls, file: str) -> NoReturn:
         return super().insert(file)
 
+    @classmethod
+    def update(cls, file: str) -> NoReturn:
+        return super().update(file)
+
         
 
 
@@ -138,6 +174,10 @@ class TopRankMoives(db.Model, BaseMovie):
     @classmethod
     def insert(cls, file: str) -> NoReturn:
         return super().insert(file)
+
+    @classmethod
+    def update(cls, file: str) -> NoReturn:
+        return super().update(file)
         
         
 
