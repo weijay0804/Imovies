@@ -18,8 +18,28 @@ class BaseMovie():
 
     @classmethod
     def insert(cls, file : str) -> NoReturn:
-        ''' 將資料寫入資料庫 '''
-        pass
+        ''' 將 json 資料寫入資料庫 '''
+
+        # 獲得資料庫中的資料，便於之後比對
+        movies = cls.query.all()
+        tmdb_id_set = set(i.tmdb_id for i in movies)
+
+        # 開啟 json 檔案，檔案必須位於根目錄
+        file_name = os.path.join(Config.BASEDIR, file)
+        f = File()
+        datas = f.input_json_file(file_name)
+
+        # insert 資料到資料庫
+        for data in datas:
+            # 如果資料已經存在資料庫就跳過
+            if data['tmdb_id'] in tmdb_id_set:
+                continue
+
+            m = cls(**data)
+
+            db.session.add(m)
+        db.session.commit()
+        print('Done!')
 
 
 
@@ -46,7 +66,6 @@ class Movies(db.Model):
     vote_average = db.Column(db.Float)
     insert_datetime = db.Column(db.DateTime, default = datetime.utcnow)
 
-    # TODO 重構程式碼
     @staticmethod
     def insert(file : str):
         ''' 將 json 資料寫入資料庫 '''
@@ -78,6 +97,7 @@ class Movies(db.Model):
 
             db.session.add(m)
         db.session.commit()
+        print('Done!')
 
     @staticmethod
     def update() -> NoReturn:
@@ -86,7 +106,7 @@ class Movies(db.Model):
 
 
 
-class PopularMovies(db.Model):
+class PopularMovies(db.Model, BaseMovie):
     ''' 熱門電影資料 '''
 
     __tablename__ = 'popularmovies'
@@ -97,37 +117,14 @@ class PopularMovies(db.Model):
     title = db.Column(db.Text)
     insert_datetime = db.Column(db.DateTime, default = datetime.utcnow)
 
-    # TODO 重構程式碼
-    @staticmethod
-    def insert(file : str) -> NoReturn:
-        ''' 將 json 資料寫入資料庫 '''
-
-        # 獲得資料庫中的資料，便於之後比對
-        movies = PopularMovies.query.all()
-        tmdb_id_set = set(i.tmdb_id for i in movies)
-
-        # 開啟 json 檔案，檔案必須位於根目錄
-        file_name = os.path.join(Config.BASEDIR, file)
-        f = File()
-        datas = f.input_json_file(file_name)
-
-        # insert 資料到資料庫
-        for data in datas:
-            # 如果資料已經存在資料庫就跳過
-            if data['tmdb_id'] in tmdb_id_set:
-                continue
-
-            m = PopularMovies(**data)
-
-            db.session.add(m)
-        db.session.commit()
-
-        print('OK')
+    @classmethod
+    def insert(cls, file: str) -> NoReturn:
+        return super().insert(file)
 
         
 
 
-class TopRankMoives(db.Model):
+class TopRankMoives(db.Model, BaseMovie):
     ''' 熱門電影資料 '''
 
     __tablename__ = 'toprankmovies'
@@ -138,31 +135,9 @@ class TopRankMoives(db.Model):
     title = db.Column(db.Text)
     insert_datetime = db.Column(db.DateTime, default = datetime.utcnow)
 
-    @staticmethod
-    def insert(file : str) -> NoReturn:
-        ''' 將 json 資料寫入資料庫 '''
-
-        # 獲得資料庫中的資料，便於之後比對
-        movies = TopRankMoives.query.all()
-        tmdb_id_set = set(i.tmdb_id for i in movies)
-
-        # 開啟 json 檔案，檔案必須位於根目錄
-        file_name = os.path.join(Config.BASEDIR, file)
-        f = File()
-        datas = f.input_json_file(file_name)
-
-        # insert 資料到資料庫
-        for data in datas:
-            # 如果資料已經存在資料庫就跳過
-            if data['tmdb_id'] in tmdb_id_set:
-                continue
-
-            m = TopRankMoives(**data)
-
-            db.session.add(m)
-        db.session.commit()
-
-        print('OK')
+    @classmethod
+    def insert(cls, file: str) -> NoReturn:
+        return super().insert(file)
         
         
 
