@@ -15,3 +15,7 @@ def index():
     movies = Movies.query.offset(int(rowCount * random.random())).limit(30)
 
     return render_template('main/index.html', movies = movies)
+
+@main.route('/movies')
+def movies():
+    return render_template('main/movies.html')
