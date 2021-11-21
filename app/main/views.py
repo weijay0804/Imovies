@@ -12,6 +12,6 @@ import random
 @main.route('/')
 def index():
     rowCount = int(Movies.query.count())
-    movies = Movies.query.offset(int(rowCount * random.random())).limit(10)
+    movies = Movies.query.offset(int(rowCount * random.random())).limit(30)
 
     return render_template('main/index.html', movies = movies)
