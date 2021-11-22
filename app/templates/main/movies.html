@@ -5,45 +5,81 @@
 {% block head %} 
     {{ super() }}
     <link href="{{ url_for('static', filename = 'css/movies.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&family=Outfit&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block page %}
     <div class="page-container">
         <div class="page-header">
-            <h1>Movies</h1>
+            <h2>發現新電影</h2>
         </div>
         <div class="items-container">
-            <table>
-                <thead>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>名稱</td>
-                        <td>類別</td>
-                        <td>評分</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for movie in movies %} 
+            <div class="table-container">
+                <table>
+                    <thead>
                         <tr>
-                            <td>1</td>
-                            <td>
-                                <img src='https://image.tmdb.org/t/p/w92/{{ movie.poster_path }}'>
-                            </td>
-                            <td>{{ movie.title }}</td>
-                            <td>{{ movie.genres }}</td>
-                            <td>{{ movie.vote_average }}</td>
-                            <td>
-                                <a href="#">
-                                    <img src="{{ url_for('static', filename = 'images/add.png') }}">
-                                </a>
-                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>名稱</td>
+                            <td>類別</td>
+                            <td>上映日期</td>
+                            <td>評分</td>
+                            <td></td>
                         </tr>
-                    {% endfor %}
-                        
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for movie in movies %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>
+                                    <img src='https://image.tmdb.org/t/p/w92/{{ movie.poster_path }}'>
+                                </td>
+                                <td class="title">
+                                    <a href="#">
+                                        <span>
+                                        {{ movie.title }}
+                                        </span>
+                                        <span class="og-title">
+                                        ({{ movie.original_title }})  
+                                        </span>
+                                                                              
+                                    </a>
+                                </td>
+                                <td>{{ movie.genres }}</td>
+                                <td>{{ movie.release_date }}</td>
+                                <td>
+                                    
+                                    <img src="{{ url_for('static', filename = 'images/star.png') }}">
+                                    {% if movie.vote_average %}
+                                        <span>{{ movie.vote_average }}</span>
+                                    {% else %}
+                                        <span></span>
+                                    {% endif %}
+                                    
+                                </td>
+                                <td>
+                                    <a href="#">
+                                        <img onmouseover="over(this)" onmouseout="out(this)" src="{{ url_for('static', filename = 'images/add-empty.png') }}"> 
+                                    </a>
+                                </td>
+                            </tr> 
+                        {% endfor %}
+                            
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function over(btn){
+            btn.src = '/static/images/add-full.png'
+        }
+
+        function out(btn) {
+            btn.src = '/static/images/add-empty.png'
+        }
+    </script>
 {% endblock %}
