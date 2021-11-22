@@ -15,6 +15,49 @@
             <h2>發現新電影</h2>
         </div>
         <div class="items-container">
+            <div class="items-header">
+                <div class="filter">
+                    <p>
+                        <a class="btn btn-link justify-content-end" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                            <img src="{{ url_for('static', filename = 'images/filter-empty.svg') }}" onmouseover="filter_over(this)" onmouseout="filter_out(this)">
+                        </a>
+                    </p>
+                      <div class="row">
+                        <div class="col">
+                          <div class="collapse multi-collapse" id="multiCollapseExample1">
+                            <div class="card card-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        依照評分
+                                        <span class="filter-icon">
+                                            <a href="{{ url_for('main.movies', sort = 'rate', desc = '1') }}">
+                                                <img src="{{ url_for('static', filename = 'images/sort-down.svg') }}">
+                                            </a>
+                                            <a href="{{ url_for('main.movies', sort = 'rate') }}">
+                                                <img src="{{ url_for('static', filename = 'images/sort-up.svg') }}">
+                                            </a>
+                                        </span>
+                                        
+                                    </li>
+                                    <li class="list-group-item">
+                                        依照上映日期
+                                        <span class="filter-icon">
+                                            <a href="#">
+                                                <img src="{{ url_for('static', filename = 'images/sort-down.svg') }}">
+                                            </a>
+                                            <a href="#">
+                                                <img src="{{ url_for('static', filename = 'images/sort-up.svg') }}">
+                                            </a>
+                                        </span>
+                                    </li>
+                                    
+                                  </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+            </div>
             <div class="table-container">
                 <table>
                     <thead>
@@ -60,7 +103,7 @@
                                 </td>
                                 <td>
                                     <a href="#">
-                                        <img onmouseover="over(this)" onmouseout="out(this)" src="{{ url_for('static', filename = 'images/add-empty.png') }}"> 
+                                        <img onmouseover="add_over(this)" onmouseout="add_out(this)" src="{{ url_for('static', filename = 'images/add-empty.png') }}"> 
                                     </a>
                                 </td>
                             </tr> 
@@ -80,12 +123,20 @@
 
 {% block scripts %}
     <script>
-        function over(btn){
+        function add_over(btn){
             btn.src = '/static/images/add-full.png'
         }
 
-        function out(btn) {
+        function add_out(btn) {
             btn.src = '/static/images/add-empty.png'
+        }
+
+        function filter_over(filter) {
+            filter.src = '/static/images/filter-full.svg'
+        }
+
+        function filter_out(filter) {
+            filter.src = '/static/images/filter-empty.svg'
         }
     </script>
 {% endblock %}

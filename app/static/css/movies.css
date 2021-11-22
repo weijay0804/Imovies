@@ -7,6 +7,31 @@
     border-bottom: 2px solid rgb(85, 83, 83);
 }
 
+.items-header{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.items-header .filter{
+    width: 20%;
+    text-align: right;
+}
+
+.list-group {
+    text-align: left;
+}
+
+.list-group .list-group-item .filter-icon{
+    float: right;
+}
+
+.filter-icon a{
+    margin-left: 15px;
+}
+
+
 .table-container{
     margin-top: 10px;
 }
