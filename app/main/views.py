@@ -4,7 +4,7 @@
 
 '''
 
-from flask import render_template
+from flask import render_template, request
 from . import main
 from ..movie_model import Movies
 import random
@@ -18,5 +18,10 @@ def index():
 
 @main.route('/movies')
 def movies():
-    movies = Movies.query.limit(10)
-    return render_template('main/movies.html', movies = movies)
+    page = request.args.get('page', 1, type=int)
+    rowCount = int(Movies.query.count())
+    pagination = Movies.query.paginate(page, per_page = 10, error_out = False)
+    movies = pagination.items
+
+    
+    return render_template('main/movies.html', movies = movies, pagination = pagination)

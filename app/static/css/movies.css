@@ -47,3 +47,7 @@ table tbody .title span{
 table tbody .title .og-title{
     font-family: 'Noto Sans TC', sans-serif;
 }
+
+.pagination-content {
+    margin: 10px 0;
+}
