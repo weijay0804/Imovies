@@ -78,13 +78,40 @@ class Movie():
 
         k = self.get_movie_video(tmdb_id)
 
+        movie_types = {
+            '恐怖' : '恐怖', 
+            '西部' : '西部', 
+            '音乐' : '音樂', 
+            '剧情' : '劇情', 
+            '战争' : '戰爭', 
+            '喜剧' : '喜劇', 
+            '爱情' : '愛情', 
+            '电视电影' : '電視電影', 
+            '惊悚' : '驚悚', 
+            '历史' : '歷史', 
+            '家庭' : '家庭', 
+            '动作' : '動作', 
+            '犯罪' : '犯罪', 
+            '悬疑' : '懸疑', 
+            '冒险' : '冒險', 
+            '奇幻' : '奇幻', 
+            '动画' : '動畫', 
+            '科幻' : '科幻',
+            }
+
+        movie_genres = []
+        for g in j_tw['genres']:
+            if g['name'] in movie_types:
+                movie_genres.append(movie_types[g['name']])
+            else:
+                movie_genres.append(g['name'])
         
         r = {
             'tmdb_id' : tmdb_id,
             'imdb_id' : j_tw['imdb_id'],
             'backdrop_path' : j_tw['backdrop_path'],
             'budget' : j_tw['budget'],
-            'genres' : list( i['name'] for i in j_tw['genres'] ),
+            'genres' : movie_genres,
             'original_language' : j_tw['original_language'],
             'original_title' : j_tw['original_title'],
             'overview' : j_tw['overview'].replace('𝟐𝟎𝟒𝟗', '2049') if tmdb_id == 370172 else j_tw['overview'], 

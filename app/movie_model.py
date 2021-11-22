@@ -50,6 +50,8 @@ class BaseMovie():
 
         for data in datas:
             tmdb_id = data['tmdb_id']
+            
+            data['insert_datetime'] = datetime.strptime('2025-11-11', '%Y-%m-%d')
 
             cls.query.filter(cls.tmdb_id == tmdb_id).update(data)
 
@@ -120,7 +122,7 @@ class Movies(db.Model):
         f = File()
         datas = f.input_json_file(file_path=Config.BASEDIR, file_name=file)
 
-        for data in datas[0:5]:
+        for data in datas:
             tmdb_id = data['tmdb_id']
             data['genres'] = ','.join(data['genres'])
             data['video_key'] = ','.join(data['video_key'])
@@ -128,6 +130,7 @@ class Movies(db.Model):
                 data['release_date'] = datetime.strptime(data['release_date'], "%Y-%m-%d")
             except:
                 data['release_date'] = None
+            data['insert_datetime'] = datetime.utcnow()
             
             Movies.query.filter(Movies.tmdb_id == tmdb_id).update(data)
         
@@ -135,7 +138,7 @@ class Movies(db.Model):
         print('Done! ')
 
     @staticmethod
-    def test():
+    def get_movie_genres():
         movies = Movies.query.all()
         movie_type = set(y 
             for movie in movies

@@ -73,7 +73,7 @@ def update(db, file):
         database = Movies
 
     database.update(file = f'{file}.json')
-    
+
 
 
 
