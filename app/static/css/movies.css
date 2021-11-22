@@ -1,0 +1,22 @@
+.page-container{
+    width: 1200px;
+    margin: auto;
+}
+.page-header{
+    width: 100%;
+    border-bottom: 2px solid rgb(85, 83, 83);
+}
+
+.items-container{
+    width: 1000px;
+    margin: auto;
+}
+
+.items-container table{
+    width: 100%;
+    text-align: center;
+}
+
+.items-container table thead{
+    padding-top: 10px;
+}

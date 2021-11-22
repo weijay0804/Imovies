@@ -18,4 +18,5 @@ def index():
 
 @main.route('/movies')
 def movies():
-    return render_template('main/movies.html')
+    movies = Movies.query.limit(10)
+    return render_template('main/movies.html', movies = movies)

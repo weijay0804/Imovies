@@ -134,6 +134,15 @@ class Movies(db.Model):
         db.session.commit()
         print('Done! ')
 
+    @staticmethod
+    def test():
+        movies = Movies.query.all()
+        movie_type = set(y 
+            for movie in movies
+            for y in movie.genres.split(',')
+            )
+        print(movie_type)
+
 
 
 

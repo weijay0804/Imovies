@@ -1,0 +1,49 @@
+{% extends 'base.html' %} 
+
+{% block title %} Movies {% endblock %}
+
+{% block head %} 
+    {{ super() }}
+    <link href="{{ url_for('static', filename = 'css/movies.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+    <div class="page-container">
+        <div class="page-header">
+            <h1>Movies</h1>
+        </div>
+        <div class="items-container">
+            <table>
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>名稱</td>
+                        <td>類別</td>
+                        <td>評分</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movie in movies %} 
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <img src='https://image.tmdb.org/t/p/w92/{{ movie.poster_path }}'>
+                            </td>
+                            <td>{{ movie.title }}</td>
+                            <td>{{ movie.genres }}</td>
+                            <td>{{ movie.vote_average }}</td>
+                            <td>
+                                <a href="#">
+                                    <img src="{{ url_for('static', filename = 'images/add.png') }}">
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                        
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
