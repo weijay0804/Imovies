@@ -42,10 +42,10 @@
                                     <li class="list-group-item">
                                         依照上映日期
                                         <span class="filter-icon">
-                                            <a href="#">
+                                            <a href="{{ url_for('main.movies', sort = 'year', desc = '1') }}">
                                                 <img src="{{ url_for('static', filename = 'images/sort-down.svg') }}">
                                             </a>
-                                            <a href="#">
+                                            <a href="{{ url_for('main.movies', sort = 'year') }}">
                                                 <img src="{{ url_for('static', filename = 'images/sort-up.svg') }}">
                                             </a>
                                         </span>
@@ -116,7 +116,7 @@
     </div>
     {% if pagination %}
         <div class="pagination-content">
-            {{ macros.pagination_widget(pagination, '.movies') }}
+            {{ macros.pagination_widget(pagination, '.movies', sort =  sort_type, desc = desc) }}
         </div>
     {% endif %}
 {% endblock %}

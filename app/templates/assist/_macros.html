@@ -2,7 +2,6 @@
 <nav>
     <ul class="pagination justify-content-center">
       <li class="{% if not pagination.has_prev %} page-item disabled {% else %} page-item {% endif %}">
-          <!-- TODO 排序問題 -->
         <a class="page-link" href="{% if pagination.has_prev %} {{url_for(endpoint, page = pagination.page - 1, **kwargs) }} {% else %} # {% endif %}" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </a>
