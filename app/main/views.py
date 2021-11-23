@@ -7,7 +7,7 @@
 from flask import render_template, request, redirect
 from sqlalchemy import or_
 from . import main
-from ..movie_model import Movies
+from ..movie_model import Movies, TopRankMoives, PopularMovies
 import random
 
 @main.route('/')
@@ -41,6 +41,74 @@ def movies():
 
     return render_template('main/movies.html', movies = movies, pagination = pagination, page = page,  args = args)
 
+@main.route('/top250')
+def top250():
+    ''' imdb top 250 電影 '''
+
+    page = request.args.get('page', 1, type=int)
+    sort_type = request.args.get('sort')
+    desc = request.args.get('desc')
+    args = {'sort' : sort_type, 'desc' : desc}
+
+    if sort_type == 'rate':
+        if desc:
+            pagination = Movies.query.join(
+                TopRankMoives, Movies.tmdb_id == TopRankMoives.tmdb_id
+                ).order_by(Movies.vote_average.desc()).paginate(page, per_page = 10, error_out = False)
+        else:
+            pagination = Movies.query.join(
+                TopRankMoives, Movies.tmdb_id == TopRankMoives.tmdb_id
+                ).order_by(Movies.vote_average).paginate(page, per_page = 10, error_out = False)
+    elif sort_type == 'year':
+        if desc:
+            pagination = Movies.query.join(
+                TopRankMoives, Movies.tmdb_id == TopRankMoives.tmdb_id
+                ).order_by(Movies.release_date.desc()).paginate(page, per_page = 10, error_out = False)
+        else:
+            pagination = Movies.query.join(
+                TopRankMoives, Movies.tmdb_id == TopRankMoives.tmdb_id
+                ).order_by(Movies.release_date).paginate(page, per_page = 10, error_out = False)
+    else:
+        pagination = Movies.query.join(
+            TopRankMoives, Movies.tmdb_id == TopRankMoives.tmdb_id
+            ).order_by(Movies.vote_average.desc()).paginate(page, per_page = 10, error_out = False)
+    movies = pagination.items
+    return render_template('main/top250.html', pagination = pagination, page = page, movies = movies, args = args)
+
+@main.route('/popular')
+def popular():
+    ''' 熱門電影 '''
+
+    page = request.args.get('page', 1, type=int)
+    sort_type = request.args.get('sort')
+    desc = request.args.get('desc')
+    args = {'sort' : sort_type, 'desc' : desc}
+
+    if sort_type == 'rate':
+        if desc:
+            pagination = Movies.query.join(
+                PopularMovies, Movies.tmdb_id == PopularMovies.tmdb_id
+                ).order_by(Movies.vote_average.desc()).paginate(page, per_page = 10, error_out = False)
+        else:
+            pagination = Movies.query.join(
+                PopularMovies, Movies.tmdb_id == PopularMovies.tmdb_id
+                ).order_by(Movies.vote_average).paginate(page, per_page = 10, error_out = False)
+    elif sort_type == 'year':
+        if desc:
+            pagination = Movies.query.join(
+                PopularMovies, Movies.tmdb_id == PopularMovies.tmdb_id
+                ).order_by(Movies.release_date.desc()).paginate(page, per_page = 10, error_out = False)
+        else:
+            pagination = Movies.query.join(
+                PopularMovies, Movies.tmdb_id == PopularMovies.tmdb_id
+                ).order_by(Movies.release_date).paginate(page, per_page = 10, error_out = False)
+    else:
+        pagination = Movies.query.join(
+            PopularMovies, Movies.tmdb_id == PopularMovies.tmdb_id
+            ).order_by(Movies.vote_average.desc()).paginate(page, per_page = 10, error_out = False)
+    movies = pagination.items
+    return render_template('main/popular.html', pagination = pagination, page = page, movies = movies, args = args)
+
 @main.route('/search', methods = ['POST'])
 def search():
     ''' 搜尋路由 '''
@@ -58,3 +126,4 @@ def search():
             ).order_by(Movies.original_title).all()
 
         return render_template('main/search.html', movies = movies)
+

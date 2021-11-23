@@ -1,0 +1,21 @@
+{% extends 'main/movies.html' %} 
+
+{% block title %} Popular {% endblock %} 
+
+{% block page %}
+    <div class="page-container">
+        <div class="page-header">
+            <h2>熱門電影</h2>
+        </div>
+        <div class="items-container">
+            {{ macros.movies_sort('main.popular')}}
+            {% include 'assist/_movies.html' %}
+            
+        </div>
+    </div>
+    {% if pagination %}
+        <div class="pagination-content">
+            {{ macros.pagination_widget(pagination, 'main.popular', **args) }}
+        </div>
+    {% endif %}
+{% endblock %}
