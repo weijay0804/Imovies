@@ -19,7 +19,7 @@
                         <img src='https://image.tmdb.org/t/p/w92/{{ movie.poster_path }}'>
                     </td>
                     <td class="title">
-                        <a href="#">
+                        <a href="{{ url_for('main.movie', id = movie.id) }}">
                             <span>
                             {{ movie.title }}
                             </span>

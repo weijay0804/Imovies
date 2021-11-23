@@ -1,0 +1,45 @@
+.page-container{
+    width: 100%;
+}
+
+.page-header{
+    border-bottom: 2px solid gray;
+    padding-bottom: 2px;
+}
+
+.items-container{
+    width: 100%;
+}
+
+.movie-container{
+    width: 100%;
+    margin-top: 60px;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.movie-image{
+    width: 350px;
+    
+
+}
+
+.movie-items{
+    margin-left: 20px;
+    width: 100%;
+}
+
+.movie-items ul li {
+    margin-bottom: 20px;
+}
+
+.movie-items ul{
+    list-style-type: none;
+}
+
+.btns-container{
+    width: 100%;
+    text-align: right;
+    font-family: 'Anton', sans-serif;
+}

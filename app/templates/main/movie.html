@@ -1,0 +1,104 @@
+{% extends 'base.html' %} 
+
+{%  block head %} 
+    {{ super() }}
+    <link href="{{ url_for('static', filename = 'css/movie.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block title %} {{ movie.title }} {% endblock %}
+
+{% block page %}
+    <div class="page-container">
+        <div class="page-header">
+            <h2> 
+                {{ movie.title }} 
+                {% if movie.original_title %} 
+                ( {{ movie.original_title }})
+                {% endif %}
+            </h2>
+        </div>
+        <div class="items-container">
+            <div class="movie-container">
+                <div class="movie-image">
+                    <img src="https://image.tmdb.org/t/p/w342{{movie.poster_path}}">     
+                </div>
+                <div class="movie-items">
+                    <ul>
+                        <li>
+                            <h4>名稱 : {{ movie.title }}</h4>
+                        </li>
+                        <li>
+                            原始名稱 : {{ movie.original_title }}
+                        </li>
+                        <li>
+                            類型 : {{ movie.genres }}
+                        </li>
+                        <li>
+                            語言 : {{ movie.original_language }}
+                        </li>
+                        <li>
+                            上映日期 : {{ movie.release_date }}
+                        </li>
+                        <li>
+                            Imdb 評分 : {{ movie.vote_average }}
+                        </li>
+                        <li>
+                            片長 : {{ movie.runtime // 60}} h {{ movie.runtime % 60}} min
+                        </li>
+                        <li>
+                            簡介 : 
+                            {% if movie.overview|length > 100 %}
+                                <div class="accordion accordion-flush" id="accordionFlushExample">
+                                    <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            {{ movie.overview[0:100] }}...
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">{{ movie.overview }}</div>
+                                    </div>
+                                    </div>
+                                </div>
+                            {% else %} 
+                                {{ movie.overview }}
+                            {% endif %}
+                        </li>
+                        <li>
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        影片
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <div class="movie-video">
+                                            {% for key in movie.video_key.split(',')[0:4] %}
+                                            <iframe width="350" height="215" src="https://www.youtube.com/embed/{{ key }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="btns-container">
+                                <a href="https://www.imdb.com/title/{{ movie.imdb_id }}/" target="_blank">
+                                <button type="button" class="btn btn-outline-warning btn-lg">IMDb</button>
+                                </a>
+                                <a href="https://www.themoviedb.org/movie/{{ movie.tmdb_id }}" target="_blank">
+                                <button type="button" class="btn btn-outline-info btn-lg">TMDB</button>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

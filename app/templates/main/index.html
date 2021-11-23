@@ -21,12 +21,12 @@
                             <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
                             <div class="card-body">
                             <h6 class="card-title">
-                                <a href="#">
+                                <a href="{{ url_for('main.movie', id = movie.id) }}">
                                     {{ movie.title }}
                                 </a>
                             </h6>
                             <p class="card-text">{{ movie.release_date }}</p>
-                            <a href="#">
+                            <a href="{{ url_for('main.movie', id = movie.id) }}">
                                 <button type="button" class="btn btn-outline-info btn-sm">GO</button>
                             </a>
                             </div>
@@ -41,12 +41,12 @@
                             <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
                             <div class="card-body">
                             <h6 class="card-title">
-                                <a href="#">
+                                <a href="{{ url_for('main.movie', id = movie.id) }}">
                                     {{ movie.title }}
                                 </a>
                             </h6>
                             <p class="card-text">{{ movie.release_date }}</p>
-                            <a href="#">
+                            <a href="{{ url_for('main.movie', id = movie.id) }}">
                                 <button type="button" class="btn btn-outline-info btn-sm">GO</button>
                             </a>
                             </div>
@@ -61,12 +61,12 @@
                             <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
                             <div class="card-body">
                             <h6 class="card-title">
-                                <a href="#">
+                                <a href="{{ url_for('main.movie', id = movie.id) }}">
                                     {{ movie.title }}
                                 </a>
                             </h6>
                             <p class="card-text">{{ movie.release_date }}</p>
-                            <a href="#">
+                            <a href="{{ url_for('main.movie', id = movie.id) }}">
                                 <button type="button" class="btn btn-outline-info btn-sm">GO</button>
                             </a>
                             </div>

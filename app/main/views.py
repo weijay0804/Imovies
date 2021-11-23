@@ -109,6 +109,15 @@ def popular():
     movies = pagination.items
     return render_template('main/popular.html', pagination = pagination, page = page, movies = movies, args = args)
 
+
+@main.route('/movies/<int:id>')
+def movie(id):
+    ''' 電影詳細資料路由 '''
+
+    movie = Movies.query.get_or_404(id)
+
+    return render_template('main/movie.html', movie = movie)
+
 @main.route('/search', methods = ['POST'])
 def search():
     ''' 搜尋路由 '''
