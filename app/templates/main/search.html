@@ -1,0 +1,23 @@
+{% extends 'main/movies.html' %} 
+
+{% block title %} Search {% endblock %} 
+
+{% block page %}
+    <div class="page-container">
+        <div class="page-header">
+            <h2>搜尋結果</h2>
+        </div>
+        <div class="items-container">
+            {% if movies %} 
+                {% include 'assist/_movies.html' %}
+            {% else %} 
+                <h3>沒有相符的結果</h3>
+            {% endif %}
+        </div>
+    </div>
+    {% if pagination %}
+        <div class="pagination-content">
+            {{ macros.pagination_widget(pagination, 'main.movies') }}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -29,3 +29,49 @@
     </ul>
 </nav>
 {% endmacro %}
+
+{% macro movies_sort(endpoint) %}
+<div class="items-header">
+  <div class="filter">
+      <p>
+          <a class="btn btn-link justify-content-end" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+              <img src="{{ url_for('static', filename = 'images/filter-empty.svg') }}" onmouseover="filter_over(this)" onmouseout="filter_out(this)">
+          </a>
+      </p>
+        <div class="row">
+          <div class="col">
+            <div class="collapse multi-collapse" id="multiCollapseExample1">
+              <div class="card card-body">
+                  <ul class="list-group">
+                      <li class="list-group-item">
+                          依照評分
+                          <span class="filter-icon">
+                              <a href="{{ url_for(endpoint, sort = 'rate', desc = '1') }}">
+                                  <img src="{{ url_for('static', filename = 'images/sort-down.svg') }}">
+                              </a>
+                              <a href="{{ url_for(endpoint, sort = 'rate') }}">
+                                  <img src="{{ url_for('static', filename = 'images/sort-up.svg') }}">
+                              </a>
+                          </span>
+                          
+                      </li>
+                      <li class="list-group-item">
+                          依照上映日期
+                          <span class="filter-icon">
+                              <a href="{{ url_for(endpoint, sort = 'year', desc = '1') }}">
+                                  <img src="{{ url_for('static', filename = 'images/sort-down.svg') }}">
+                              </a>
+                              <a href="{{ url_for(endpoint, sort = 'year') }}">
+                                  <img src="{{ url_for('static', filename = 'images/sort-up.svg') }}">
+                              </a>
+                          </span>
+                      </li>
+                      
+                    </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+</div>
+{% endmacro %}

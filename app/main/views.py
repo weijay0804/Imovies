@@ -4,7 +4,8 @@
 
 '''
 
-from flask import render_template, request
+from flask import render_template, request, redirect
+from sqlalchemy import or_
 from . import main
 from ..movie_model import Movies
 import random
@@ -19,9 +20,11 @@ def index():
 
 @main.route('/movies')
 def movies():
+    ''' 所有電影路由 '''
     page = request.args.get('page', 1, type=int)
     sort_type = request.args.get('sort')
     desc = request.args.get('desc')
+    args = {'sort' : sort_type, 'desc' : desc}
     if sort_type == 'rate':
         if desc:
             pagination = Movies.query.order_by(Movies.vote_average.desc()).paginate(page, per_page = 10, error_out = False)
@@ -36,4 +39,22 @@ def movies():
         pagination = Movies.query.paginate(page, per_page = 10, error_out = False)
     movies = pagination.items
 
-    return render_template('main/movies.html', movies = movies, pagination = pagination, sort_type = sort_type, desc = desc)
+    return render_template('main/movies.html', movies = movies, pagination = pagination, page = page,  args = args)
+
+@main.route('/search', methods = ['POST'])
+def search():
+    ''' 搜尋路由 '''
+
+    if request.method == 'POST':
+        search_key = request.form.get('key')
+        if not search_key:
+            return redirect(request.referrer)
+        
+        movies = Movies.query.filter(
+            or_( 
+                ( Movies.title.like(f'%{search_key}%') ), 
+                ( Movies.original_title.like(f'%{search_key}%') )
+                )
+            ).order_by(Movies.original_title).all()
+
+        return render_template('main/search.html', movies = movies)
