@@ -4,18 +4,16 @@
 
 '''
 
-import re
+
 from flask import render_template, request, flash, redirect, url_for
+from flask_login import login_user
 from . import auth
+from ..user_model import Users
+from app import db
 
 @auth.route('/register', methods = ['GET', 'POST'])
 def register():
     ''' 使用者註冊路由 '''
-
-    # TODO 連接資料庫
-
-    username_list = {'a', 'b', 'c'}
-    email_list = {'a@gmail.com'}
 
     if request.method == 'POST':
         email = request.form.get('email')
@@ -23,11 +21,11 @@ def register():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        if email in email_list:
+        if Users.query.filter_by(email = email).first():
             flash('Email 已經被使用')
             return render_template('auth/register.html', email = email, username = username)
 
-        if username in username_list:
+        if Users.query.filter_by(username = username).first():
             flash('使用者名稱已存在')
             return render_template('auth/register.html', email = email)
 
@@ -35,6 +33,9 @@ def register():
             flash('密碼必須相同')
             return render_template('auth/register.html', email = email, username = username)
 
+        u = Users(email = email, username = username, password = password1)
+        db.session.add(u)
+        db.session.commit()
         flash('註冊成功')
         return redirect(url_for('auth.login'))
 
@@ -44,18 +45,18 @@ def register():
 def login():
     ''' 使用者登入路由 '''
 
-    email_list = {'a@gmail.com'}
-    password_list = {'a'}
 
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
 
-        if email not in email_list or password not in password_list:
+        u = Users.query.filter_by(email = email).first()
+
+        if not u or not u.verify_password(password):
             flash('帳號或密碼錯誤')
 
             return redirect(url_for('auth.login'))
-        
+        login_user(u)
         return redirect(url_for('main.index'))
 
 

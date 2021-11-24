@@ -30,20 +30,44 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                     <li class="nav-item navbar-right">
-                        <a class="nav-link" href="{{ url_for('main.movies') }}">探索</a>
+                        <a class="nav-link" href="{{ url_for('main.movies') }}">
+                          <img src="{{ url_for('static', filename = 'images/discover.png') }}" width="24" height="24" class="d-inline-block align-text-top">
+                          探索
+                        </a>
                     </li>
                     <li class="nav-item navbar-right">
-                      <a class="nav-link" href="{{ url_for('main.top250') }}">IMDb Top 250</a>
+                      <a class="nav-link" href="{{ url_for('main.top250') }}">
+                        <img src="{{ url_for('static', filename = 'images/toprank.png') }}" width="24" height="24" class="d-inline-block align-text-top">
+                        IMDb Top 250
+                      </a>
                     </li>
                     <li class="nav-item navbar-right">
-                      <a class="nav-link" href="{{ url_for('main.popular') }}">熱門電影</a>
+                      <a class="nav-link" href="{{ url_for('main.popular') }}">
+                        <img src="{{ url_for('static', filename = 'images/popular.png') }}" width="24" height="24" class="d-inline-block align-text-top">
+                        熱門電影
+                      </a>
+                    </li>
+                    {% if current_user.is_authenticated %} 
+                    <li class="nav-item navbar-right">
+                        <a class="nav-link" href="#">
+                          <img src="{{ url_for('static', filename = 'images/person.svg') }}" width="24" height="24" class="d-inline-block align-text-top">
+                          個人資料
+                        </a>
                     </li>
                     <li class="nav-item navbar-right">
-                        <a class="nav-link" href="#">個人資料</a>
+                      <a class="nav-link" href="{{ url_for('auth.login') }}">
+                        <img src="{{ url_for('static', filename = 'images/logout.svg') }}" width="24" height="24" class="d-inline-block align-text-top">
+                        登出
+                      </a>
                     </li>
+                    {% else %}
                     <li class="nav-item navbar-right">
-                      <a class="nav-link" href="{{ url_for('auth.login') }}">登入</a>
-                  </li>
+                      <a class="nav-link" href="{{ url_for('auth.login') }}">
+                        <img src="{{ url_for('static', filename = 'images/login.svg') }}" width="24" height="24" class="d-inline-block align-text-top">
+                        登入
+                      </a>
+                    </li>
+                    {% endif %}
                 </ul>
               <form class="d-flex" action="{{ url_for('main.search') }}" method="post">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

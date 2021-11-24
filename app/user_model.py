@@ -4,11 +4,13 @@
 
 '''
 
-from app import db
+
 from typing import NoReturn
+from . import login_manager, db
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class Users(db.Model):
+class Users(db.Model, UserMixin):
     ''' user 資料表 '''
 
     __tablename__ = 'users'
@@ -33,3 +35,8 @@ class Users(db.Model):
         ''' 檢查使用者密碼是否正確 '''
 
         return check_password_hash(self.password_hash, password)
+
+@login_manager.user_loader
+def load_user(user_id):
+    ''' 載入使用者 '''
+    return Users.query.get(int(user_id))
