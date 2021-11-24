@@ -10,11 +10,12 @@ from . import main
 from ..movie_model import Movies, TopRankMoives, PopularMovies
 import random
 
+# TODO 重構 排序程式
+
 @main.route('/')
 def index():
     rowCount = int(Movies.query.count())
     movies = Movies.query.offset(int(rowCount * random.random())).limit(30)
-
     return render_template('main/index.html', movies = movies)
 
 

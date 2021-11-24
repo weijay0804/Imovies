@@ -1,0 +1,43 @@
+{% extends 'base.html' %} 
+
+{% block head %} 
+    {{ super() }}
+    <link href="{{ url_for('static', filename = 'css/register.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %} Register {% endblock %}
+
+{% block page %} 
+    <div class="page-container">
+        <div class="page-header">
+            <h1>註冊</h1>
+        </div>
+        <div class="items-container">
+            <div class="form-container">
+                <form class="row g-3" action="{{ url_for('auth.register') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" value="{{ email }}" required>
+                    </div>
+                    <div class="mb-3">
+                    <label for="username" class="form-label">使用者名稱</label>
+                    <input type="text" class="form-control" id="username" name="username" value="{{ username }}"  required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">密碼</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="password1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">確認密碼</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="password2" required>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-outline-success">送出</button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}

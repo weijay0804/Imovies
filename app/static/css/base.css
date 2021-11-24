@@ -11,6 +11,11 @@ body{
     margin: auto;
 }
 
+.alert-container{
+    margin-top: 10px;
+    width: 100%;
+}
+
 body {
     margin-bottom: 50px;
    

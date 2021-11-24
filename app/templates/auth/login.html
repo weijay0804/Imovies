@@ -1,0 +1,52 @@
+{% extends 'base.html' %} 
+
+{% block head %} 
+    {{ super() }}
+    <link href="{{ url_for('static', filename = 'css/login.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %} Login {% endblock %}
+
+{% block page %} 
+    <div class="page-container">
+        <div class="items-container">
+            <div class="page-header">
+                <img src="{{ url_for('static', filename = 'images/nav-icon.png') }}">
+                <h3>
+                    iMovies
+                </h3>
+            </div>
+            <div class="login-container">
+                <div class="login-header">
+                    <h4>登入你的帳戶</h4>
+                </div>
+                <div class="form-container">
+                    <form class="row g-3" action="{{ url_for('auth.login') }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" value="{{ email }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">密碼</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-secondary">登入</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="login-footer">
+                    <h5>
+                        第一次使用?
+                        <a href="{{ url_for('auth.register') }}">
+                            註冊
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

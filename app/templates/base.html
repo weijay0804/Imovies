@@ -33,7 +33,7 @@
                         <a class="nav-link" href="{{ url_for('main.movies') }}">探索</a>
                     </li>
                     <li class="nav-item navbar-right">
-                      <a class="nav-link" href="{{ url_for('main.top250') }}">Imdb Top 250</a>
+                      <a class="nav-link" href="{{ url_for('main.top250') }}">IMDb Top 250</a>
                     </li>
                     <li class="nav-item navbar-right">
                       <a class="nav-link" href="{{ url_for('main.popular') }}">熱門電影</a>
@@ -41,8 +41,12 @@
                     <li class="nav-item navbar-right">
                         <a class="nav-link" href="#">個人資料</a>
                     </li>
+                    <li class="nav-item navbar-right">
+                      <a class="nav-link" href="{{ url_for('auth.login') }}">登入</a>
+                  </li>
                 </ul>
               <form class="d-flex" action="{{ url_for('main.search') }}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name = 'key'>
                 <button class="btn btn-outline-success" type="submit">Search</button>
               </form>
@@ -51,8 +55,16 @@
     </nav>
 
     <div class="wrap">
-        {% block page %} 
-        {% endblock %}
+      <div class="alert-container">
+        {% for message in get_flashed_messages() %} 
+          <div class="alert alert-secondary" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+      {% block page %} 
+      {% endblock %}
     </div>
 
     {% block scripts %} 

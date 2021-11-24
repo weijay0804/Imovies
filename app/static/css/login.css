@@ -1,0 +1,65 @@
+.page-container{
+    width: 100%;
+    margin-top: 5px;
+}
+
+.items-container{
+    width: 100%;
+    margin: 30px auto;
+}
+
+.page-header{
+    position: relative;
+    top: 50px;
+    text-align: center;
+}
+
+.page-header h3{
+    margin-top: 5px;
+}
+
+.login-container{
+    border-radius: 25px;
+    color: white;
+    width: 50%;
+    height: 500px;
+    margin: auto;
+    position: relative;
+    top: 90px;
+    background-color: rgb(65, 90, 119);
+}
+
+.login-header{
+    text-align: center;
+    position: relative;
+    top: 20px;
+}
+
+.form-container{
+    width: 80%;
+    margin: auto;
+    position: relative;
+    top: 70px;
+    font-size: large;
+}
+
+.login-footer{
+    border-top: 2px solid gray;
+    padding-top: 20px;
+    height: 50px;
+    text-align: center;
+    position: relative;
+    top: 120px;
+}
+
+.login-footer a{
+    text-decoration: none;
+    color: wheat;
+}
+
+.login-footer a:hover{
+    color: aquamarine;
+}
+
+
+

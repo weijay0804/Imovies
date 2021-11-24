@@ -1,0 +1,16 @@
+.page-container{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.page-header{
+    margin-bottom: 10px;
+    border-bottom: 2px solid gray;
+}
+
+.form-container{
+    font-size: larger;
+    width: 90%;
+    margin: 30px auto;
+}
+
