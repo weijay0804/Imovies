@@ -54,8 +54,12 @@
                           個人資料
                         </a>
                     </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav justify-content-end">
+                  {% if current_user.is_authenticated %} 
                     <li class="nav-item navbar-right">
-                      <a class="nav-link" href="{{ url_for('auth.login') }}">
+                      <a class="nav-link" href="{{ url_for('auth.logout') }}">
                         <img src="{{ url_for('static', filename = 'images/logout.svg') }}" width="24" height="24" class="d-inline-block align-text-top">
                         登出
                       </a>
