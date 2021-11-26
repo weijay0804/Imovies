@@ -86,23 +86,63 @@ def movie(id):
 
     return render_template('main/movie.html', movie = movie)
 
-@main.route('/search', methods = ['POST'])
+@main.route('/search',)
 def search():
     ''' 搜尋路由 '''
 
-    if request.method == 'POST':
-        search_key = request.form.get('key')
-        if not search_key:
-            return redirect(request.referrer)
-        
-        movies = Movies.query.filter(
+    page = request.args.get('page', 1, type=int)
+    sort_type = request.args.get('sort')
+    desc = request.args.get('desc')
+    search_key = request.args.get('key')
+
+    pagination_args = {'sort' : sort_type, 'desc' : desc, 'key' : search_key}
+    sort_args = {'key' : search_key}
+
+    if not search_key:
+        return redirect(request.referrer)
+
+    if sort_type == 'rate':
+        if desc:
+            pagination = Movies.query.filter(
+                or_( 
+                ( Movies.title.like(f'%{search_key}%') ), 
+                ( Movies.original_title.like(f'%{search_key}%') )
+                )
+            ).order_by(Movies.vote_average.desc()).paginate(page, per_page = 10, error_out = False)
+        else:
+            pagination = Movies.query.filter(
+                or_( 
+                ( Movies.title.like(f'%{search_key}%') ), 
+                ( Movies.original_title.like(f'%{search_key}%') )
+                )
+            ).order_by(Movies.vote_average).paginate(page, per_page = 10, error_out = False)
+    elif sort_type == 'year':
+        if desc:
+            pagination = Movies.query.filter(
+                    or_( 
+                    ( Movies.title.like(f'%{search_key}%') ), 
+                    ( Movies.original_title.like(f'%{search_key}%') )
+                    )
+                ).order_by(Movies.release_date.desc()).paginate(page, per_page = 10, error_out = False)
+        else:
+            pagination = Movies.query.filter(
+                    or_( 
+                    ( Movies.title.like(f'%{search_key}%') ), 
+                    ( Movies.original_title.like(f'%{search_key}%') )
+                    )
+                ).order_by(Movies.release_date).paginate(page, per_page = 10, error_out = False)
+    else:
+
+        pagination = Movies.query.filter(
             or_( 
                 ( Movies.title.like(f'%{search_key}%') ), 
                 ( Movies.original_title.like(f'%{search_key}%') )
                 )
-            ).order_by(Movies.original_title).all()
+            ).order_by(Movies.original_title).paginate(page, per_page = 10, error_out = False)
+    
+    movies = pagination.items
 
-        return render_template('main/search.html', movies = movies)
+    return render_template('main/search.html', movies = movies, pagination = pagination, sort_args = sort_args, pagination_args = pagination_args)
 
 @main.route('/movies/<genre>')
 def movie_genre(genre):

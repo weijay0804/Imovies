@@ -80,8 +80,8 @@
                     </li>
                     {% endif %}
                 </ul>
-              <form class="d-flex" action="{{ url_for('main.search') }}" method="post">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <form class="d-flex" action="{{ url_for('main.search') }}" method="get">
+               
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name = 'key'>
                 <button class="btn btn-outline-success" type="submit">Search</button>
               </form>

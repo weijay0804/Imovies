@@ -9,6 +9,7 @@
         </div>
         <div class="items-container">
             {% if movies %} 
+            {{ macros.movies_sort('main.search', **sort_args)}}
                 {% include 'assist/_movies.html' %}
             {% else %} 
                 <h3>沒有相符的結果</h3>
@@ -17,7 +18,7 @@
     </div>
     {% if pagination %}
         <div class="pagination-content">
-            {{ macros.pagination_widget(pagination, 'main.movies') }}
+            {{ macros.pagination_widget(pagination, 'main.search', **pagination_args) }}
         </div>
     {% endif %}
 {% endblock %}
