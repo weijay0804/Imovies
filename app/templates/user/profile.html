@@ -40,6 +40,18 @@
                             {% endif %}
                         </li>
                         <li>
+                            {% if user.about_me %}
+                            喜歡的電影類別: 
+                            {% for genre in user.favorite_movie_genres.split(',') %} 
+                                <a href="{{url_for('main.movie_genre', genre = genre) }}">
+                                    {{ genre }}
+                                </a>
+                                
+                            {% endfor %}
+                            
+                            {% endif %}
+                        </li>
+                        <li>
                             從 {{ moment(user.member_since).format('LL') }} 加入 <br>
                             上次登入是 {{ moment(user.last_seen).fromTime(now) }}
                         </li>

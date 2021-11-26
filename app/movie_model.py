@@ -12,6 +12,7 @@ from typing import NoReturn
 import os
 
 class Generes():
+    # 還有一個 紀錄 類別，因為沒有電影是記錄類別，所以沒放
     generes_en = {
         '動作' : 'action',
         '犯罪' : 'crime',
@@ -31,7 +32,6 @@ class Generes():
         '家庭' : 'family',
         '愛情' : 'romance',
         '喜劇' : 'comedy',
-        '紀錄' : 'documentary'
     }
 
     # 還有一個 紀錄 類別，因為沒有電影是記錄類別，所以沒放

@@ -24,7 +24,31 @@
                     <div class="mb-3">
                         <label for="exampleFormControlTextarea1" class="form-label">關於我</label>
                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name = 'about_me'>{{ form_about_me }}</textarea>
-                      </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">感興趣的電影類別</label>
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    電影類別
+                                </button>
+                              </h2>
+                              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    {% for ch, en in genres_dict.items() %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="{{ ch }}" id="check{{ loop.index }}" name="{{ en }}" {% if ch in form_genres %} checked {% endif %}>
+                                        <label class="form-check-label" for="check{{ loop.index }}">
+                                          {{ ch }}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-12">
                       <button class="btn btn-primary" type="submit">送出</button>
                     </div>
