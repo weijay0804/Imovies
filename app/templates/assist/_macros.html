@@ -46,10 +46,10 @@
                       <li class="list-group-item">
                           依照評分
                           <span class="filter-icon">
-                              <a href="{{ url_for(endpoint, sort = 'rate', desc = '1') }}">
+                              <a href="{{ url_for(endpoint, sort = 'rate', desc = '1', **kwargs) }}">
                                   <img src="{{ url_for('static', filename = 'images/sort-down.svg') }}">
                               </a>
-                              <a href="{{ url_for(endpoint, sort = 'rate') }}">
+                              <a href="{{ url_for(endpoint, sort = 'rate', **kwargs) }}">
                                   <img src="{{ url_for('static', filename = 'images/sort-up.svg') }}">
                               </a>
                           </span>
@@ -58,10 +58,10 @@
                       <li class="list-group-item">
                           依照上映日期
                           <span class="filter-icon">
-                              <a href="{{ url_for(endpoint, sort = 'year', desc = '1') }}">
+                              <a href="{{ url_for(endpoint, sort = 'year', desc = '1', **kwargs) }}">
                                   <img src="{{ url_for('static', filename = 'images/sort-down.svg') }}">
                               </a>
-                              <a href="{{ url_for(endpoint, sort = 'year') }}">
+                              <a href="{{ url_for(endpoint, sort = 'year', **kwargs) }}">
                                   <img src="{{ url_for('static', filename = 'images/sort-up.svg') }}">
                               </a>
                           </span>

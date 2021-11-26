@@ -15,12 +15,13 @@
             <h2>類別 : {{ genre }}</h2>
         </div>
         <div class="items-container">
+            {{ macros.movies_sort('main.movie_genre', **sort_args)}}
             {% include 'assist/_movies.html' %}
         </div>
     </div>
     {% if pagination %}
         <div class="pagination-content">
-            {{ macros.pagination_widget(pagination, 'main.movies', **args) }}
+            {{ macros.pagination_widget(pagination, 'main.movie_genre', **pagination_args) }}
         </div>
     {% endif %}
 {% endblock %}
