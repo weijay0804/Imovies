@@ -31,7 +31,11 @@
                     </td>
                     <td>
                         {% for genre in movie.genres.split(',') %}
-                        <a href="{{ url_for('main.movie_genre', genre = genre) }}">{{ genre }}</a>
+                            {% if genre in genres %}
+                                <a href="{{ url_for('main.movie_genre', genre = genre) }}">{{ genre }}</a>
+                            {% else %} 
+                                {{ genre }}
+                            {% endif %}
                         {% endfor %}
                     </td>
                     <td>{{ movie.release_date }}</td>
