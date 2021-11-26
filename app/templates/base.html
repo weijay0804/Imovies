@@ -56,7 +56,7 @@
                     
                     {% if current_user.is_authenticated %} 
                     <li class="nav-item navbar-right">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ url_for('user.profile', id = current_user.id) }}">
                           <img src="{{ url_for('static', filename = 'images/person.svg') }}" width="24" height="24" class="d-inline-block align-text-top">
                           個人資料
                         </a>
@@ -119,7 +119,9 @@
       {% endblock %}
     </div>
 
-    {% block scripts %} 
+    {% block scripts %}
+      {{ moment.include_moment() }}
+      {{ moment.locale(auto_detect=True) }}
     {% endblock %} 
 
     

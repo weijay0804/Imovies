@@ -26,4 +26,8 @@
     {% endif %}
 {% endblock %}
 
+{% block scripts %}
+    {{ super() }}
+    {% include 'assist/_function.html' %} 
+{% endblock %}
 

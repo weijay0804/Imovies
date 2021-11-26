@@ -1,12 +1,12 @@
 '''
 
-    使用者藍圖路由
+     使用者認證藍圖路由
 
 '''
 
 
 from flask import render_template, request, flash, redirect, url_for
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from . import auth
 from ..user_model import Users
 from app import db
@@ -67,6 +67,7 @@ def login():
 def logout():
     ''' 使用者登出路由 '''
     
+    current_user.ping()
     logout_user()
     flash('你已經登出')
     return redirect(url_for('main.index'))

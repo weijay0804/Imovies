@@ -123,7 +123,7 @@ class Movies(db.Model):
     status = db.Column(db.String(30))
     title = db.Column(db.Text)
     vote_average = db.Column(db.Float)
-    insert_datetime = db.Column(db.DateTime, default = datetime.utcnow)
+    insert_datetime = db.Column(db.DateTime(), default = datetime.utcnow)
 
     @staticmethod
     def insert(file : str):
@@ -202,7 +202,7 @@ class PopularMovies(db.Model, BaseMovie):
     tmdb_id = db.Column(db.Integer, unique = True, index = True)
     imdb_id = db.Column(db.String(15), unique = True)
     title = db.Column(db.Text)
-    insert_datetime = db.Column(db.DateTime, default = datetime.utcnow)
+    insert_datetime = db.Column(db.DateTime(), default = datetime.utcnow)
 
     @classmethod
     def insert(cls, file: str) -> NoReturn:
@@ -224,7 +224,7 @@ class TopRankMoives(db.Model, BaseMovie):
     tmdb_id = db.Column(db.Integer, unique = True, index = True)
     imdb_id = db.Column(db.String(15), unique = True)
     title = db.Column(db.Text)
-    insert_datetime = db.Column(db.DateTime, default = datetime.utcnow)
+    insert_datetime = db.Column(db.DateTime(), default = datetime.utcnow)
 
     @classmethod
     def insert(cls, file: str) -> NoReturn:

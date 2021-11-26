@@ -1,0 +1,58 @@
+{% extends 'base.html' %} 
+
+{% block head %} 
+    {{ super() }}
+    <link href="{{ url_for('static', filename = 'css/profile.css' ) }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %} {{ user.username }} Profile {% endblock %}
+
+
+{% block page %} 
+    <div class="page-container">
+        <div class="page-header">
+            <h2>{{ user.username }} 的個人檔案</h2>
+        </div>
+        <div class="items-container">
+            <div class="profile-container">
+                <div class="user-image">
+                    <img src="{{ user.gravatar(size = 256) }}" class="img-thumbnail" alt="...">
+                </div>
+                <div class="user-profile">
+                    <ul>
+                        <li>
+                            {% if user.name %}
+                            <h3>{{ user.name }}</h3>
+                            {% endif %}
+                        </li>
+                        <li>
+                            {% if user.location %}
+                            來自
+                            
+                            <a href="http://maps.google.com/?q={{ user.location }}" target="_blank">{{ user.location }}</a>
+                            {% endif %}
+                        </li>
+                        <li>
+                            {% if user.about_me %}
+                            關於我 : 
+                            
+                            {{ user.about_me }}
+                            {% endif %}
+                        </li>
+                        <li>
+                            從 {{ moment(user.member_since).format('LL') }} 加入 <br>
+                            上次登入是 {{ moment(user.last_seen).fromTime(now) }}
+                        </li>
+                        <li class="edit-btn">
+                            <a href="{{ url_for('user.edit_profile', id = current_user.id) }}">
+                            <button type="button" class="btn btn-outline-secondary">編輯</button>
+                            </a>
+                        </li>
+                    </ul>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

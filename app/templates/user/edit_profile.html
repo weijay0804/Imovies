@@ -1,0 +1,35 @@
+{% extends 'base.html' %} 
+
+{% block title %} Edit Profile {% endblock %} 
+
+{% block page %}
+    <div class="page-container">
+        <div class="page-header">
+            <h2>
+                編輯個人檔案
+            </h2>
+        </div>
+        <div class="items-container">
+            <div class="form-container">
+                <form class="row g-3" action="#" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">真實名稱</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ form_name }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">居住地</label>
+                        <input type="text" class="form-control" id="location" name="location" value="{{ form_location }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">關於我</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name = 'about_me'>{{ form_about_me }}</textarea>
+                      </div>
+                    <div class="col-12">
+                      <button class="btn btn-primary" type="submit">送出</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

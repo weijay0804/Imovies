@@ -60,23 +60,3 @@
         </tbody>
     </table>
 </div>
-
-{% block scripts %}
-    <script>
-        function add_over(btn){
-            btn.src = '/static/images/add-full.png'
-        }
-
-        function add_out(btn) {
-            btn.src = '/static/images/add-empty.png'
-        }
-
-        function filter_over(filter) {
-            filter.src = '/static/images/filter-full.svg'
-        }
-
-        function filter_out(filter) {
-            filter.src = '/static/images/filter-empty.svg'
-        }
-    </script>
-{% endblock %}

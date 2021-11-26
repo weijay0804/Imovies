@@ -6,9 +6,11 @@
 
 
 from typing import NoReturn
+from datetime import datetime
 from . import login_manager, db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+import hashlib
 
 class Users(db.Model, UserMixin):
     ''' user 資料表 '''
@@ -19,6 +21,19 @@ class Users(db.Model, UserMixin):
     email = db.Column(db.String(128), unique = True, index = True)
     username = db.Column(db.String(64), unique = True, index = True)
     password_hash = db.Column(db.String(128))
+    name = db.Column(db.String(64))
+    about_me = db.Column(db.Text)
+    location = db.Column(db.String(64))
+    member_since = db.Column(db.DateTime(), default = datetime.utcnow)
+    last_seen = db.Column(db.DateTime(), default = datetime.utcnow)
+    avatar_hash = db.Column(db.String(32))
+
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs)
+
+        if self.username is not None and self.avatar_hash is None:
+            self.avatar_hash = self.gravatar_hash()
+
 
     @property
     def password(self) -> NoReturn:
@@ -35,6 +50,30 @@ class Users(db.Model, UserMixin):
         ''' 檢查使用者密碼是否正確 '''
 
         return check_password_hash(self.password_hash, password)
+
+    def ping(self) -> None:
+        ''' 更新使用者登入時間 '''
+
+        self.last_seen = datetime.utcnow()
+        db.session.add(self)
+        db.session.commit()
+
+    def gravatar_hash(self) -> str:
+        ''' 根據使用者 username 產生 md5 hash 值'''
+
+        hash = hashlib.md5(self.username.lower().encode('utf-8')).hexdigest()
+
+        return hash
+        
+    def gravatar(self, size : int = 100, default : str = 'identicon', rating : str = 'g') -> str:
+        ''' 生成使用者頭相 url '''
+
+        url = 'https://www.gravatar.com/avatar'
+
+        hash = self.avatar_hash or self.gravatar_hash()
+        
+
+        return f'{url}/{hash}?s={size}&d={default}&r={rating}'
 
 @login_manager.user_loader
 def load_user(user_id):
