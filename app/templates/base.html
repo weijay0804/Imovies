@@ -36,6 +36,12 @@
                         </a>
                     </li>
                     <li class="nav-item navbar-right">
+                      <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                        <img src="{{ url_for('static', filename = 'images/list.png') }}" width="24" height="24" class="d-inline-block align-text-top">
+                        分類
+                      </a>
+                    </li>
+                    <li class="nav-item navbar-right">
                       <a class="nav-link" href="{{ url_for('main.top250') }}">
                         <img src="{{ url_for('static', filename = 'images/toprank.png') }}" width="24" height="24" class="d-inline-block align-text-top">
                         IMDb Top 250
@@ -47,6 +53,7 @@
                         熱門電影
                       </a>
                     </li>
+                    
                     {% if current_user.is_authenticated %} 
                     <li class="nav-item navbar-right">
                         <a class="nav-link" href="#">
@@ -90,6 +97,23 @@
             {{ message }}
           </div>
         {% endfor %}
+      </div>
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel">電影類別</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="list-group list-group-flush">
+            {% for genre in genres %}
+            <li class="list-group-item">
+              <a href="{{ url_for('main.movie_genre', genre = genre) }}">
+                {{ genre }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
       {% block page %} 
       {% endblock %}

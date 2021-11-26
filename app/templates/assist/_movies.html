@@ -29,7 +29,11 @@
                                                                   
                         </a>
                     </td>
-                    <td>{{ movie.genres }}</td>
+                    <td>
+                        {% for genre in movie.genres.split(',') %}
+                        <a href="{{ url_for('main.movie_genre', genre = genre) }}">{{ genre }}</a>
+                        {% endfor %}
+                    </td>
                     <td>{{ movie.release_date }}</td>
                     <td>
                         

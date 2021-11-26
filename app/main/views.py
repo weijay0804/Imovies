@@ -7,8 +7,13 @@
 from flask import render_template, request, redirect
 from sqlalchemy import or_
 from . import main
-from ..movie_model import Movies, TopRankMoives, PopularMovies
+from ..movie_model import Movies, TopRankMoives, PopularMovies, Generes
 import random
+
+@main.app_context_processor
+def inject_movie_geners():
+    genres = Generes.genres_set
+    return dict(genres = genres)
 
 # TODO 重構 排序程式
 
@@ -137,3 +142,14 @@ def search():
 
         return render_template('main/search.html', movies = movies)
 
+@main.route('/movies/<genre>')
+def movie_genre(genre):
+    ''' 電影分類路由 '''
+
+
+    page = request.args.get('page')
+    movies = Movies.query.filter(
+        Movies.genres.like(f'%{genre}%')
+    ).order_by(Movies.original_title).all()
+
+    return render_template('main/movie_gener.html', movies = movies, genre = genre)

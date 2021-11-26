@@ -32,7 +32,10 @@
                             原始名稱 : {{ movie.original_title }}
                         </li>
                         <li>
-                            類型 : {{ movie.genres }}
+                            類型 : 
+                            {% for genre in movie.genres.split(',') %} 
+                                {{ genre }}
+                            {% endfor %}
                         </li>
                         <li>
                             語言 : {{ movie.original_language }}

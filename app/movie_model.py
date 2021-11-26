@@ -11,7 +11,50 @@ from config import Config
 from typing import NoReturn
 import os
 
+class Generes():
+    generes_en = {
+        '動作' : 'action',
+        '犯罪' : 'crime',
+        '戰爭' : 'war',
+        '奇幻' : 'fantasy',
+        '驚悚' : 'thriller',
+        '動畫' : 'fantasy',
+        '歷史' : 'history',
+        '西部' : 'western',
+        '冒險' : 'adventure',
+        '科幻' : 'science-fiction',
+        '恐怖' : 'crime',
+        '電視電影' : 'TV-movie',
+        '劇情' : 'drama',
+        '懸疑' : 'mystery',
+        '音樂' : 'music',
+        '家庭' : 'family',
+        '愛情' : 'romance',
+        '喜劇' : 'comedy',
+        '紀錄' : 'documentary'
+    }
 
+    # 還有一個 紀錄 類別，因為沒有電影是記錄類別，所以沒放
+    genres_set = {
+        '科幻',
+        '奇幻',
+        '家庭', 
+        '驚悚', 
+        '動畫', 
+        '電視電影', 
+        '愛情', 
+        '恐怖', 
+        '劇情', 
+        '西部', 
+        '戰爭', 
+        '犯罪', 
+        '歷史', 
+        '喜劇', 
+        '動作', 
+        '懸疑', 
+        '音樂', 
+        '冒險'
+        }
 
 class BaseMovie():
     ''' 基本 movie 資料庫類別 '''
