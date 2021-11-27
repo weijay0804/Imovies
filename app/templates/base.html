@@ -28,31 +28,38 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-                    <li class="nav-item navbar-right">
-                        <a class="nav-link" href="{{ url_for('main.movies') }}">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                      <img src="{{ url_for('static', filename = 'images/film.svg') }}" width="24" height="24" class="d-inline-block align-text-top">
+                      電影
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a class="dropdown-item" href="{{ url_for('main.movies') }}">
                           <img src="{{ url_for('static', filename = 'images/discover.png') }}" width="24" height="24" class="d-inline-block align-text-top">
                           探索
                         </a>
-                    </li>
-                    <li class="nav-item navbar-right">
-                      <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-                        <img src="{{ url_for('static', filename = 'images/list.png') }}" width="24" height="24" class="d-inline-block align-text-top">
-                        分類
-                      </a>
-                    </li>
-                    <li class="nav-item navbar-right">
-                      <a class="nav-link" href="{{ url_for('main.top250') }}">
-                        <img src="{{ url_for('static', filename = 'images/toprank.png') }}" width="24" height="24" class="d-inline-block align-text-top">
-                        IMDb Top 250
-                      </a>
-                    </li>
-                    <li class="nav-item navbar-right">
-                      <a class="nav-link" href="{{ url_for('main.popular') }}">
-                        <img src="{{ url_for('static', filename = 'images/popular.png') }}" width="24" height="24" class="d-inline-block align-text-top">
-                        熱門電影
-                      </a>
-                    </li>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{{ url_for('main.top250') }}">
+                          <img src="{{ url_for('static', filename = 'images/toprank.png') }}" width="24" height="24" class="d-inline-block align-text-top">
+                          IMDb Top 250
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{{ url_for('main.popular') }}">
+                          <img src="{{ url_for('static', filename = 'images/popular.png') }}" width="24" height="24" class="d-inline-block align-text-top">
+                          熱門電影
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item navbar-right">
+                    <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                      <img src="{{ url_for('static', filename = 'images/list.png') }}" width="24" height="24" class="d-inline-block align-text-top">
+                      分類
+                    </a>
+                  </li>
                     
                     {% if current_user.is_authenticated %} 
                     <li class="nav-item navbar-right">
@@ -61,6 +68,12 @@
                           個人資料
                         </a>
                     </li>
+                    <li class="nav-item navbar-right">
+                      <a class="nav-link" href="{{ url_for('user.user_movies', id = current_user.id) }}">
+                        <img src="{{ url_for('static', filename = 'images/collection.svg') }}" width="24" height="24" class="d-inline-block align-text-top">
+                        收藏的電影
+                      </a>
+                  </li>
                     {% endif %}
                 </ul>
                 <ul class="navbar-nav justify-content-end">
