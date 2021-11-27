@@ -12,6 +12,14 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import hashlib
 
+user_movies = db.Table(
+    'user_movies',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('movie_id', db.Integer, db.ForeignKey('movies.id'))
+)
+
+
+
 class Users(db.Model, UserMixin):
     ''' user 資料表 '''
 
@@ -28,6 +36,8 @@ class Users(db.Model, UserMixin):
     member_since = db.Column(db.DateTime(), default = datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default = datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
+
+    movies = db.relationship('Movies', secondary = user_movies, backref = db.backref('users', lazy = 'dynamic'), lazy = 'dynamic')
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
