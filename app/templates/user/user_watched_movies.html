@@ -1,15 +1,15 @@
 {% extends 'main/movies.html' %} 
 
-{% block title %} {{ current_user.username }} 的電影清單 {% endblock %} 
+{% block title %} {{ current_user.username }} 看過電影清單 {% endblock %} 
 
 {% block page %}
     <div class="page-container">
         <div class="page-header">
-            <h2>{{ current_user.username }} 收藏的電影</h2>
-            <h4> 你收藏了 {{ movies_count }} 部電影</h4>
+            <h2>{{ current_user.username }} 看過的電影</h2>
+            <h4> 你已經看了 {{ movies_count }} 部電影</h4>
         </div>
         <div class="items-container">
-            {{ macros.movies_sort('user.user_movies', id = current_user.id)}}
+            {{ macros.movies_sort('user.user_watched_movies', id = current_user.id)}}
 
             <div class="table-container">
                 <table>
@@ -63,10 +63,7 @@
                                     
                                 </td>
                                 <td>
-                                    <a href="{{ url_for('user.user_add_watched_movie', id = movie.id) }}">
-                                        <img onmouseover="add_over(this)" onmouseout="add_out(this)" src="{{ url_for('static', filename = 'images/add-empty.svg') }}"> 
-                                    </a>
-                                    <a href="{{ url_for('user.user_delete_movie', id = movie.id) }}">
+                                    <a href="{{ url_for('user.user_delete_watched_movie', id = movie.id ) }}">
                                         <img onmouseover="delete_over(this)" onmouseout="delete_out(this)" src="{{ url_for('static', filename = 'images/dash-empty.svg') }}"> 
                                     </a>
                                 </td>
@@ -81,13 +78,12 @@
     </div>
     {% if pagination %}
         <div class="pagination-content">
-            {{ macros.pagination_widget(pagination, 'user.user_movies', **args) }}
+            {{ macros.pagination_widget(pagination, 'user.user_watched_movies', **args) }}
         </div>
     {% endif %}
 {% endblock %}
 
 {% block scripts %}
-    {{ super() }}
     <script>
         function delete_over(btn){
         btn.src = '/static/images/dash-full.svg'

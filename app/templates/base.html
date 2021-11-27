@@ -73,7 +73,13 @@
                         <img src="{{ url_for('static', filename = 'images/collection.svg') }}" width="24" height="24" class="d-inline-block align-text-top">
                         收藏的電影
                       </a>
-                  </li>
+                    </li>
+                    <li class="nav-item navbar-right">
+                      <a class="nav-link" href="{{ url_for('user.user_watched_movies', id = current_user.id) }}">
+                        <img src="{{ url_for('static', filename = 'images/eye.svg') }}" width="24" height="24" class="d-inline-block align-text-top">
+                        已觀看的電影
+                      </a>
+                    </li>
                     {% endif %}
                 </ul>
                 <ul class="navbar-nav justify-content-end">

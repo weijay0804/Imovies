@@ -18,6 +18,11 @@ user_movies = db.Table(
     db.Column('movie_id', db.Integer, db.ForeignKey('movies.id'))
 )
 
+user_watched_movies = db.Table(
+    'user_watched_movies',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('movie_id', db.Integer, db.ForeignKey('movies.id'))
+)
 
 
 class Users(db.Model, UserMixin):
@@ -38,6 +43,7 @@ class Users(db.Model, UserMixin):
     avatar_hash = db.Column(db.String(32))
 
     movies = db.relationship('Movies', secondary = user_movies, backref = db.backref('users', lazy = 'dynamic'), lazy = 'dynamic')
+    watched_movies = db.relationship('Movies', secondary = user_watched_movies, backref = db.backref('watched_users', lazy = 'dynamic'), lazy = 'dynamic')
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)

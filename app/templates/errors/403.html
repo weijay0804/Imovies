@@ -1,0 +1,20 @@
+{% extends 'base.html' %} 
+
+{% block title %} Forbidden {% endblock %} 
+
+{% block head %} 
+    {{ super() }}
+    <link href="{{ url_for('static', filename = 'css/error.css') }}" rel="stylesheet">
+{% endblock %}
+
+
+{% block page %} 
+    <div class="page-container">
+        <div class="page-header">
+            <h2>錯誤!! 使用者權限不足</h2>
+        </div>
+        <div class="item-container">
+            <img src="{{ url_for('static', filename = 'images/no-touch.png') }}">
+        </div>
+    </div>
+{% endblock %}
