@@ -94,7 +94,7 @@ class BaseMovie():
         for data in datas:
             tmdb_id = data['tmdb_id']
             
-            data['insert_datetime'] = datetime.strptime('2025-11-11', '%Y-%m-%d')
+            data['insert_datetime'] = datetime.utcnow()
 
             cls.query.filter(cls.tmdb_id == tmdb_id).update(data)
 
@@ -124,6 +124,8 @@ class Movies(db.Model):
     title = db.Column(db.Text)
     vote_average = db.Column(db.Float)
     insert_datetime = db.Column(db.DateTime(), default = datetime.utcnow)
+
+    comments = db.relationship('Comments', backref = 'movie', lazy = 'dynamic')
 
     @staticmethod
     def insert(file : str):

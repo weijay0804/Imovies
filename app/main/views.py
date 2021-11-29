@@ -5,11 +5,15 @@
 '''
 
 from flask import render_template, request, redirect
+from flask.helpers import flash, url_for
 from sqlalchemy import or_
 from . import main
 from ..movie_model import Movies, TopRankMoives, PopularMovies, Generes
+from ..user_model import Comments
 import random
 from ..app_function import sort_movies, sort_need_join_movies
+from app import db
+from flask_login import current_user
 
 @main.app_context_processor
 def inject_movie_geners():
@@ -78,13 +82,24 @@ def popular():
     return render_template('main/popular.html', pagination = pagination, page = page, movies = movies, args = args)
 
 
-@main.route('/movies/<int:id>')
+@main.route('/movies/<int:id>', methods = ['GET', 'POST'])
 def movie(id):
     ''' 電影詳細資料路由 '''
 
     movie = Movies.query.get_or_404(id)
 
-    return render_template('main/movie.html', movie = movie)
+    if request.method == 'POST':
+        comment_data = request.form.get('comment')
+        comment = Comments(body = comment_data, movie = movie, user = current_user._get_current_object())
+        db.session.add(comment)
+        db.session.commit()
+        flash('評論已經送出')
+
+        return redirect(url_for('main.movie', id = id))
+
+    comments = movie.comments.all()
+
+    return render_template('main/movie.html', movie = movie, comments = comments)
 
 @main.route('/search',)
 def search():

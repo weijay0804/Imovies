@@ -22,8 +22,6 @@
 
 .movie-image{
     width: 350px;
-    
-
 }
 
 .movie-items{
@@ -53,6 +51,21 @@
     width: 100%;
     text-align: right;
     font-family: 'Anton', sans-serif;
+}
+
+
+.comments-container {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.comments-container .comments-header{
+    margin: 10px 0;
+    border-top: 2px solid gray;
+}
+
+.comment-items{
+    margin-top: 30px;
 }
 
 

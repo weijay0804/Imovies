@@ -84,6 +84,7 @@
 {% endblock %}
 
 {% block scripts %}
+    {{ super() }}
     <script>
         function delete_over(btn){
         btn.src = '/static/images/dash-full.svg'

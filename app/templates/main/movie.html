@@ -114,6 +114,35 @@
                     </ul>
                 </div>
             </div>
+            <div class="comments-container">
+                <div class="comments-header">
+                    <h2>評論</h2>
+                </div>
+                <div class="comment-items">
+                    {% if current_user.is_authenticated %}
+                    <div class="form-container">
+                        <form class="row g-3" action="{{ url_for('main.movie', id = movie.id) }}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <div class="mb-3 row">
+                                <label for="exampleFormControlTextarea1" class="form-label">有什麼想法?</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name = 'comment' required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit">送出</button>
+                                </div>
+                            </div>
+                        </form> 
+                    </div>
+                    {% endif %}
+                    <div class="comments">
+                        <ul>
+                            <li>test</li>
+                            <li>test</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>

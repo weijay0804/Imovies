@@ -25,6 +25,17 @@ user_watched_movies = db.Table(
 )
 
 
+class Comments(db.Model):
+    ''' 使用者評論表 '''
+
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer, primary_key = True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, default = datetime.utcnow, index = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
+
 class Users(db.Model, UserMixin):
     ''' user 資料表 '''
 
@@ -44,6 +55,8 @@ class Users(db.Model, UserMixin):
 
     movies = db.relationship('Movies', secondary = user_movies, backref = db.backref('users', lazy = 'dynamic'), lazy = 'dynamic')
     watched_movies = db.relationship('Movies', secondary = user_watched_movies, backref = db.backref('watched_users', lazy = 'dynamic'), lazy = 'dynamic')
+    comments = db.relationship('Comments', backref = 'user', lazy = 'dynamic')
+
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)

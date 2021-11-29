@@ -52,16 +52,20 @@ def crawling(type, limit, name, detail):
         main.get_movie_details(movie_file_name=f'{name}.json', output_file_name=f'{name}_detail.json')
 
 @app.cli.command()
-@click.option('--database', '-db', 'db', help = 'insert to which database', required = True)
+@click.option('--database', '-db', 'db_name', help = 'insert to which database', required = True)
 @click.option('--file', '-f', 'file', help = 'which file you want to insert (without extension)', required = True)
-def insert(db, file):
+def insert(db_name, file):
     ''' 寫入資料到資料庫 '''
 
-    if db == 'popular':
+    if db_name == 'popular':
+        PopularMovies.query.delete()
+        db.session.commit()
         database = PopularMovies
-    if db == 'top':
+    if db_name == 'top':
+        TopRankMoives.query.delete()
+        db.session.commit()
         database = TopRankMoives
-    if db == 'movies':
+    if db_name == 'movies':
         database = Movies
 
     database.insert(file = f'{file}.json')
