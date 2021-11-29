@@ -97,7 +97,7 @@ def movie(id):
 
         return redirect(url_for('main.movie', id = id))
 
-    comments = movie.comments.all()
+    comments = movie.comments.order_by(Comments.timestamp.desc()).all()
 
     return render_template('main/movie.html', movie = movie, comments = comments)
 

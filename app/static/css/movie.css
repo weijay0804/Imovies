@@ -57,15 +57,56 @@
 .comments-container {
     margin-top: 10px;
     width: 100%;
-}
-
-.comments-container .comments-header{
-    margin: 10px 0;
     border-top: 2px solid gray;
 }
 
+.comments-container .comments-header{
+    margin: 20px 0;
+    
+}
+
 .comment-items{
-    margin-top: 30px;
+    margin-top: 50px;
+}
+
+.comment-ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 16px 0px 0px 0px;
+}
+.comment-li{
+    margin-left: 32px;
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.comment-li:nth-child(1) {
+    border-top: 1px solid #e0e0e0;
+}
+
+.comment-li:hover{
+    background-color: #f0f0f0;
+}
+
+div.comment-date {
+    float: right;
+}
+div.comment-author {
+    font-weight: bold;
+}
+div.comment-thumbnail {
+    position: absolute;
+}
+div.comment-content {
+    margin-left: 48px;
+    min-height: 48px;
+}
+div.comment-form {
+    margin: 16px 0px 16px 32px;
+}
+
+.comment-content {
+    margin-bottom: 10px;
 }
 
 
