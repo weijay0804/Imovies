@@ -20,8 +20,6 @@ def inject_movie_geners():
     genres = Generes.genres_set
     return dict(genres = genres)
 
-# TODO 重構 排序程式
-
 @main.route('/')
 def index():
     rowCount = int(Movies.query.count())
