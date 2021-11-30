@@ -8,14 +8,14 @@
 import os
 import click
 from app import create_app, db
-from flask_migrate import Migrate
+from flask_migrate import Migrate, upgrade
 from app.movie_model import Movies, PopularMovies, TopRankMoives
 from app.user_model import Users
 from crawler.main import Main
 import time
 
 
-app = create_app('development')
+app = create_app(os.environ.get('FLASK_CONFIG') or 'development')
 migrate = Migrate(app, db)
 
 @app.shell_context_processor
@@ -84,6 +84,13 @@ def update(db, file):
         database = Movies
 
     database.update(file = f'{file}.json')
+
+@app.cli.command()
+def deploy():
+    ''' 更新資料庫 '''
+
+    upgrade()
+
 
 
 

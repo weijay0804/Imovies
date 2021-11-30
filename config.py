@@ -16,6 +16,7 @@ class Config():
     SECRET_KEY = os.environ.get('SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BASEDIR = os.path.abspath(os.path.dirname(__file__))
+    SSL_REDIRECT = False
 
 
     @staticmethod
@@ -37,8 +38,25 @@ class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
 
+class ProductionConfig(Config):
+    if os.environ.get('DATABASE_URL'):
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace('postgres', 'postgresql')
+    else:
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(Config.BASEDIR, 'data.sqlite')
+
+class HerokuConfig(ProductionConfig):
+    @classmethod
+    def init_app(cls, app):
+        ProductionConfig.init_app(app)
+
+        from werkzeug.middleware.proxy_fix import ProxyFix
+        app.wsgi_app = ProxyFix(app.wsgi_app)
+
+    SSL_REDIRECT = True if os.environ.get('DYNO') else False
 
 config = {
     'development' : DevelopmentConfig,
-    'testing' : TestingConfig
+    'testing' : TestingConfig, 
+    'production' : ProductionConfig,
+    'heroku' : HerokuConfig
 }
