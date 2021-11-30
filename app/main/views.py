@@ -88,6 +88,29 @@ def movie(id):
 
     movie = Movies.query.get_or_404(id)
 
+    similar_movie_numbers = 8   # 相似電影的數量 ( 4 * 2 )
+
+    similar_title = Movies.query.filter(
+
+        or_(
+        (Movies.title.like(f'%{movie.title}%')),
+        (Movies.original_title.like(f'%{movie.original_title}%'))
+        )
+    ).limit(similar_movie_numbers).all()
+
+    if not similar_title or len(similar_title) < similar_movie_numbers:
+        movie_genre = movie.genres.split(',')[0]
+        rowCount = int(Movies.query.filter(Movies.genres.like(f'%{movie_genre}%')).count())
+        similar_genre = Movies.query.filter(
+            Movies.genres.like(f'%{movie_genre}%')
+        ).offset(int(rowCount * random.random())).limit(similar_movie_numbers - len(similar_title)).all()
+    else:
+        similar_genre = []
+
+    similar_movies = similar_title
+    similar_movies.extend(similar_genre)
+
+            
     if request.method == 'POST':
         comment_data = request.form.get('comment')
         comment = Comments(body = comment_data, movie = movie, user = current_user._get_current_object())
@@ -99,7 +122,7 @@ def movie(id):
 
     comments = movie.comments.order_by(Comments.timestamp.desc()).all()
 
-    return render_template('main/movie.html', movie = movie, comments = comments)
+    return render_template('main/movie.html', movie = movie, comments = comments, similar_movies = similar_movies)
 
 @main.route('/search',)
 def search():

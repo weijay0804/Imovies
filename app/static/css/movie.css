@@ -53,6 +53,26 @@
     font-family: 'Anton', sans-serif;
 }
 
+.similar-movies{
+    border-top: 2px solid gray;
+    width: 100%;
+    height: 500px;
+}
+
+.similar-movies-title{
+    margin-top: 10px;
+}
+
+.similar-movies-items{
+    width: 60%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
 
 .comments-container {
     margin-top: 10px;

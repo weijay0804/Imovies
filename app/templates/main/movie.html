@@ -114,6 +114,61 @@
                     </ul>
                 </div>
             </div>
+            <div class="similar-movies">
+                <div class="similar-movies-title">
+                    <h2>相似電影</h2>
+                </div>
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <div class="similar-movies-items">
+                            {% for similar_movie in similar_movies[0:4] %}
+                            <div class="card" style="width: 154px;">
+                                <img src="https://image.tmdb.org/t/p/w154{{ similar_movie.poster_path }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h6 class="card-title">
+                                    <a href="{{ url_for('main.movie', id = similar_movie.id) }}">
+                                        {{ similar_movie.title }}
+                                    </a>
+                                </h6>
+                                <p class="card-text">{{ similar_movie.release_date }}</p>
+                                <a href="{{ url_for('main.movie', id = similar_movie.id) }}">
+                                    <button type="button" class="btn btn-outline-info btn-sm">GO</button>
+                                </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="similar-movies-items">
+                            {% for similar_movie in similar_movies[4:] %}
+                            <div class="card" style="width: 154px;">
+                                <img src="https://image.tmdb.org/t/p/w154{{ similar_movie.poster_path }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h6 class="card-title">
+                                    <a href="{{ url_for('main.movie', id = similar_movie.id) }}">
+                                        {{ similar_movie.title }}
+                                    </a>
+                                </h6>
+                                <p class="card-text">{{ similar_movie.release_date }}</p>
+                                <a href="{{ url_for('main.movie', id = similar_movie.id) }}">
+                                    <button type="button" class="btn btn-outline-info btn-sm">GO</button>
+                                </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <img src="{{ url_for('static', filename = 'images/previous.png') }}">
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <img src="{{ url_for('static', filename = 'images/next.png') }}">
+                    </button>
+                </div>
+            </div>
             <div class="comments-container">
                 <div class="comments-header">
                     <h2>評論</h2>
