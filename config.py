@@ -34,6 +34,17 @@ class DevelopmentConfig(Config):
 
     SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 
+class HerokuTest(Config):
+    DEBUG = True
+
+    DB_HOST = os.environ.get('HDB_HOST')
+    DB_PORT = os.environ.get('HDB_PORT')
+    DB_USER = os.environ.get('HDB_USER')
+    DB_PASSWORD = os.environ.get('HDB_PASSWORD')
+    DB_NAME = os.environ.get('HDB_NAME')
+
+    SQLALCHEMY_DATABASE_URI = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
@@ -58,5 +69,6 @@ config = {
     'development' : DevelopmentConfig,
     'testing' : TestingConfig, 
     'production' : ProductionConfig,
-    'heroku' : HerokuConfig
+    'heroku' : HerokuConfig,
+    'herokutest' : HerokuTest
 }
