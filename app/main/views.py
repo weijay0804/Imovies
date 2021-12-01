@@ -17,12 +17,17 @@ from ..app_function import sort_movies, sort_need_join_movies
 
 @main.app_context_processor
 def inject_movie_geners():
+    ''' 讓模板可以讀取到電影類別的資料 '''
+
     genres = Generes.genres_set
     return dict(genres = genres)
 
 
 @main.route('/')
 def index():
+    ''' 主頁面 '''
+
+    # 隨機取資料，確保取出的電影每次都不同
     rowCount = int(Movies.query.count())
     movies = Movies.query.offset(int(rowCount * random.random())).limit(30)
     return render_template('main/index.html', movies = movies)
@@ -32,11 +37,13 @@ def index():
 def movies():
     ''' 所有電影路由 '''
     
+    # 取得 url 的參數
     page = request.args.get('page', 1, type=int)
     sort_type = request.args.get('sort')
     desc = request.args.get('desc')
     args = {'sort' : sort_type, 'desc' : desc}
     
+    # 排序電影
     if sort_type:
         pagination = sort_movies(sort_type=sort_type, desc=desc).paginate(page, per_page = 10, error_out = False)
     else:
@@ -49,11 +56,13 @@ def movies():
 def top250():
     ''' imdb top 250 電影 '''
 
+    # 取得 url 的參數
     page = request.args.get('page', 1, type=int)
     sort_type = request.args.get('sort')
     desc = request.args.get('desc')
     args = {'sort' : sort_type, 'desc' : desc}
 
+    # 排序電影
     if sort_type:
         pagination = sort_need_join_movies(TopRankMoives, sort_type=sort_type, desc=desc).paginate(page, per_page = 10, error_out = False)
     else:
@@ -67,11 +76,13 @@ def top250():
 def popular():
     ''' 熱門電影 '''
 
+    # 取得 url 的參數
     page = request.args.get('page', 1, type=int)
     sort_type = request.args.get('sort')
     desc = request.args.get('desc')
     args = {'sort' : sort_type, 'desc' : desc}
 
+    # 排序電影
     if sort_type:
         pagination = sort_need_join_movies(PopularMovies, sort_type=sort_type, desc=desc).paginate(page, per_page = 10, error_out = False)
     else:
@@ -90,14 +101,20 @@ def movie(id):
 
     similar_movie_numbers = 8   # 相似電影的數量 ( 4 * 2 )
 
-    similar_title = Movies.query.filter(
+    # 將電影名稱以 : 分割
+    movie_title = movie.title.split('：')[0]    
+    movie_original_title = movie.original_title.split(':')[0]
 
+    # 用分割後的電影名稱去資料庫尋找
+    similar_title = Movies.query.filter(
         or_(
-        (Movies.title.like(f'%{movie.title}%')),
-        (Movies.original_title.like(f'%{movie.original_title}%'))
+        (Movies.title.like(f'%{movie_title}%')),
+        (Movies.original_title.like(f'%{movie_original_title}%'))
         )
     ).limit(similar_movie_numbers).all()
 
+    # 如果沒有找到或數量不夠時，用電影的類別去尋找
+    # 使用 offset 隨機取資料
     if not similar_title or len(similar_title) < similar_movie_numbers:
         movie_genre = movie.genres.split(',')[0]
         rowCount = int(Movies.query.filter(Movies.genres.like(f'%{movie_genre}%')).count())
@@ -107,10 +124,12 @@ def movie(id):
     else:
         similar_genre = []
 
+    # 將找到的資料合併成一個 list
     similar_movies = similar_title
     similar_movies.extend(similar_genre)
 
-            
+    
+    # 處理表單
     if request.method == 'POST':
         comment_data = request.form.get('comment')
         comment = Comments(body = comment_data, movie = movie, user = current_user._get_current_object())
@@ -128,6 +147,7 @@ def movie(id):
 def search():
     ''' 搜尋路由 '''
 
+    # 取得 url 參數
     page = request.args.get('page', 1, type=int)
     sort_type = request.args.get('sort')
     desc = request.args.get('desc')
@@ -136,9 +156,11 @@ def search():
     pagination_args = {'sort' : sort_type, 'desc' : desc, 'key' : search_key}
     sort_args = {'key' : search_key}
 
+    # 如果搜尋框沒有輸入東西就導回之前的頁面
     if not search_key:
         return redirect(request.referrer)
 
+    # 排序電影
     if sort_type == 'rate':
         if desc:
             pagination = Movies.query.filter(
@@ -187,6 +209,7 @@ def movie_genre(genre):
     ''' 電影分類路由 '''
 
 
+    # 取得 url 參數
     page = request.args.get('page', 1, type=int)
     sort_type = request.args.get('sort')
     desc = request.args.get('desc')
@@ -194,6 +217,7 @@ def movie_genre(genre):
     pagination_args = {'sort' : sort_type, 'desc' : desc, 'genre' : genre}
     sort_args = {'genre' : genre}
 
+    # 排序電影
     if sort_type == 'rate':
         if desc:
             pagination = Movies.query.filter(

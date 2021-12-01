@@ -20,6 +20,7 @@ from ..movie_model import Generes, Movies
 def profile(id):
     ''' 使用者個人檔案路由 '''
 
+    # 獲得當前時間，讓模板可以處理
     now  = datetime.utcnow()
 
     user = Users.query.get_or_404(id)
@@ -31,6 +32,7 @@ def profile(id):
 def edit_profile(id):
     ''' 使用者編輯個人檔案路由 '''
 
+    # 取得電影的所有類別
     genres_dict = Generes.generes_en
     user = Users.query.get_or_404(id)
 
@@ -44,12 +46,14 @@ def edit_profile(id):
         'form_genres' : set(user.favorite_movie_genres.split(',')) if user.favorite_movie_genres else set()
     }
 
+    # 處理表單
     if request.method == 'POST':
         name = request.form.get('name') 
         location = request.form.get('location') 
         about_me = request.form.get('about_me') 
         movie_genres = []
 
+        # 處理使用者勾選喜歡的電影類別回傳的資料
         for genre in set(genres_dict.values()):
             if request.form.get(genre):
                 movie_genres.append(request.form.get(genre))
@@ -73,9 +77,11 @@ def user_add_movie(id):
 
     movie = Movies.query.get_or_404(id)
 
+    # 獲得使用者收藏和看過的電影
     user_movies = current_user.movies.all()
     user_watched_movies = current_user.watched_movies.all()
 
+    # 處理使用者加入電影的邏輯
     if movie not in user_movies and movie not in user_watched_movies:
         current_user.movies.append(movie)
         db.session.commit()
@@ -116,17 +122,20 @@ def user_movies(id):
     if current_user != user:
         abort(403)
 
+    # 獲得使用者的收藏電影 (query 物件)
     query = user.movies
 
+    # 獲得使用者收藏的電影數量
     movies_count = query.count()
 
+    # 或得 url 參數
     page = request.args.get('page', 1, type=int)
     sort_type = request.args.get('sort')
     desc = request.args.get('desc')
 
     args = {'sort' : sort_type, 'desc' : desc, 'id' : id}
 
-
+    # 排序電影
     if sort_type == 'rate':
         if desc:
             pagination = query.order_by(Movies.vote_average.desc()).paginate(page, per_page = 10, error_out = False)
@@ -152,8 +161,10 @@ def user_add_watched_movie(id):
 
     movie = Movies.query.get_or_404(id)
 
+    # 獲得使用者已觀看的電影
     user_watched_movies = current_user.watched_movies.all()
 
+    # 處理加入已觀看電影的邏輯
     if movie not in user_watched_movies:
         current_user.watched_movies.append(movie)
         current_user.movies.remove(movie)

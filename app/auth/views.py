@@ -16,20 +16,24 @@ from ..user_model import Users
 def register():
     ''' 使用者註冊路由 '''
 
+    # 處理表單
     if request.method == 'POST':
         email = request.form.get('email')
         username = request.form.get('username')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
+        # 如果 email 存在資料庫，就發出錯誤訊息
         if Users.query.filter_by(email = email).first():
             flash('Email 已經被使用')
             return render_template('auth/register.html', email = email, username = username)
 
+        # 如果 username 存在資料庫，就發出錯誤訊息
         if Users.query.filter_by(username = username).first():
             flash('使用者名稱已存在')
             return render_template('auth/register.html', email = email)
 
+        # 如果密碼不相同，就發出錯誤訊息
         if password1 != password2:
             flash('密碼必須相同')
             return render_template('auth/register.html', email = email, username = username)
@@ -47,6 +51,7 @@ def login():
     ''' 使用者登入路由 '''
 
 
+    # 處理表單
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -68,6 +73,7 @@ def login():
 def logout():
     ''' 使用者登出路由 '''
     
+    # 更新使用者登入時間
     current_user.ping()
     logout_user()
     flash('你已經登出')
