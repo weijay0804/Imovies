@@ -5,13 +5,15 @@
 '''
 
 
-from datetime import datetime
-from . import user
+
 from flask import render_template, request, flash, redirect, url_for, abort
 from flask_login import login_required, current_user
+from datetime import datetime
+from app import db
+from . import user
 from ..user_model import Users
 from ..movie_model import Generes, Movies
-from app import db
+
 
 @user.route('/profile/<int:id>')
 @login_required

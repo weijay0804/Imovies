@@ -4,13 +4,12 @@
 
 '''
 
-
+import hashlib
 from typing import NoReturn
 from datetime import datetime
-from . import login_manager, db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-import hashlib
+from . import login_manager, db
 
 user_movies = db.Table(
     'user_movies',

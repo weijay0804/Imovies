@@ -4,21 +4,22 @@
 
 '''
 
-from flask import render_template, request, redirect
-from flask.helpers import flash, url_for
+import random
+from flask import render_template, request, redirect, flash, url_for
 from sqlalchemy import or_
+from flask_login import current_user
+from app import db
 from . import main
 from ..movie_model import Movies, TopRankMoives, PopularMovies, Generes
 from ..user_model import Comments
-import random
 from ..app_function import sort_movies, sort_need_join_movies
-from app import db
-from flask_login import current_user
+
 
 @main.app_context_processor
 def inject_movie_geners():
     genres = Generes.genres_set
     return dict(genres = genres)
+
 
 @main.route('/')
 def index():
@@ -30,6 +31,7 @@ def index():
 @main.route('/movies')
 def movies():
     ''' 所有電影路由 '''
+    
     page = request.args.get('page', 1, type=int)
     sort_type = request.args.get('sort')
     desc = request.args.get('desc')

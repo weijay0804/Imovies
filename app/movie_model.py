@@ -4,12 +4,14 @@
 
 '''
 
+import os
 from app import db
 from datetime import datetime
+from typing import NoReturn
 from crawler.model import File
 from config import Config
-from typing import NoReturn
-import os
+
+
 
 class Generes():
     # 還有一個 紀錄 類別，因為沒有電影是記錄類別，所以沒放

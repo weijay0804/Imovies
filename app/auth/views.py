@@ -7,9 +7,10 @@
 
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
+from app import db
 from . import auth
 from ..user_model import Users
-from app import db
+
 
 @auth.route('/register', methods = ['GET', 'POST'])
 def register():

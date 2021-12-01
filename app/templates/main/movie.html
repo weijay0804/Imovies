@@ -26,10 +26,13 @@
                 <div class="movie-items">
                     <ul>
                         <li>
+                            <img src="{{ url_for('static', filename = 'images/check.png') }}">
                             <a href="{{ url_for('user.user_add_movie', id = movie.id) }}">
                                 <img onmouseover="add_over(this)" onmouseout="add_out(this)" src="{{ url_for('static', filename = 'images/add-empty.svg') }}"> 
                             </a>
+                            
                         </li>
+                        
                         
                         <li class="title">
                             <h4>名稱 : {{ movie.title }}</h4>

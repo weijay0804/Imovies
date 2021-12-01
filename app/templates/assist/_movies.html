@@ -4,6 +4,7 @@
             <tr>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td>名稱</td>
                 <td>類別</td>
                 <td>上映日期</td>
@@ -15,6 +16,11 @@
             {% for movie in movies %}
                 <tr>
                     <td>{{ loop.index }}</td>
+                    <td>
+                        {% if current_user.is_authenticated and ( movie in current_user.movies or movie in current_user.watched_movies ) %}
+                        <img class="check" src="{{ url_for('static', filename = 'images/check.png') }}">
+                        {% endif %}
+                    </td>
                     <td>
                         <img src='https://image.tmdb.org/t/p/w92/{{ movie.poster_path }}'>
                     </td>
