@@ -26,7 +26,9 @@
                 <div class="movie-items">
                     <ul>
                         <li>
+                            {% if current_user.is_authenticated and ( movie in current_user.movies or movie in current_user.watched_movies ) %}
                             <img src="{{ url_for('static', filename = 'images/check.png') }}">
+                            {% endif %}
                             <a href="{{ url_for('user.user_add_movie', id = movie.id) }}">
                                 <img onmouseover="add_over(this)" onmouseout="add_out(this)" src="{{ url_for('static', filename = 'images/add-empty.svg') }}"> 
                             </a>
