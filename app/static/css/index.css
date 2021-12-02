@@ -24,3 +24,23 @@
     align-items: center;
 }
 
+.item-2{
+    margin-top: 20px;
+}
+
+.itme-header{
+    margin: 5px 0;
+    border-bottom: 2px solid gray;
+}
+
+.recommend-items{
+    width: 900px;
+    height: 375px;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+

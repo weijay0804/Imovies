@@ -30,7 +30,29 @@ def index():
     # 隨機取資料，確保取出的電影每次都不同
     rowCount = int(Movies.query.count())
     movies = Movies.query.offset(int(rowCount * random.random())).limit(30)
-    return render_template('main/index.html', movies = movies)
+
+    # TODO 客製化推薦電影
+
+    movie_genres = Generes.genres_set.copy()   # 電影類別
+
+    if '電視電影' in movie_genres:
+        movie_genres.remove('電視電影')
+
+    ra_numbers = random.sample(range(0, len(movie_genres)) ,3)  # 產生 3 個隨機數字當 index
+
+    recommend_movies = []
+    recommend_genres = []
+
+    for index, genrs_index in enumerate(ra_numbers):
+        genre = movie_genres[genrs_index]
+
+        re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).limit(10).all()
+
+
+        recommend_movies.append(list(re_movies))
+        recommend_genres.append(genre)
+
+    return render_template('main/index.html', movies = movies, recommend_movies = recommend_movies, recommend_genres = recommend_genres)
 
 
 @main.route('/movies')

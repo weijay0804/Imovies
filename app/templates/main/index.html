@@ -12,76 +12,135 @@
         </div>
 
         <div class="items-container">
-            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <div class="items">
-                        {% for movie in movies[0:10] %} 
-                        <div class="card" style="width: 154px;">
-                            <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h6 class="card-title">
+            <div class="item-1">
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="items">
+                            {% for movie in movies[0:10] %} 
+                            <div class="card" style="width: 154px;">
+                                <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h6 class="card-title">
+                                    <a href="{{ url_for('main.movie', id = movie.id) }}">
+                                        {{ movie.title }}
+                                    </a>
+                                </h6>
+                                <p class="card-text">{{ movie.release_date }}</p>
                                 <a href="{{ url_for('main.movie', id = movie.id) }}">
-                                    {{ movie.title }}
+                                    <button type="button" class="btn btn-outline-info btn-sm">GO</button>
                                 </a>
-                            </h6>
-                            <p class="card-text">{{ movie.release_date }}</p>
-                            <a href="{{ url_for('main.movie', id = movie.id) }}">
-                                <button type="button" class="btn btn-outline-info btn-sm">GO</button>
-                            </a>
+                                </div>
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
-                  </div>
-                  <div class="carousel-item">
-                    <div class="items">
-                        {% for movie in movies[11:21] %} 
-                        <div class="card" style="width: 154px;">
-                            <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h6 class="card-title">
+                    <div class="carousel-item">
+                        <div class="items">
+                            {% for movie in movies[11:21] %} 
+                            <div class="card" style="width: 154px;">
+                                <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h6 class="card-title">
+                                    <a href="{{ url_for('main.movie', id = movie.id) }}">
+                                        {{ movie.title }}
+                                    </a>
+                                </h6>
+                                <p class="card-text">{{ movie.release_date }}</p>
                                 <a href="{{ url_for('main.movie', id = movie.id) }}">
-                                    {{ movie.title }}
+                                    <button type="button" class="btn btn-outline-info btn-sm">GO</button>
                                 </a>
-                            </h6>
-                            <p class="card-text">{{ movie.release_date }}</p>
-                            <a href="{{ url_for('main.movie', id = movie.id) }}">
-                                <button type="button" class="btn btn-outline-info btn-sm">GO</button>
-                            </a>
+                                </div>
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
-                  </div>
-                  <div class="carousel-item">
-                    <div class="items">
-                        {% for movie in movies[21:31] %} 
-                        <div class="card" style="width: 154px;">
-                            <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h6 class="card-title">
+                    <div class="carousel-item">
+                        <div class="items">
+                            {% for movie in movies[21:31] %} 
+                            <div class="card" style="width: 154px;">
+                                <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h6 class="card-title">
+                                    <a href="{{ url_for('main.movie', id = movie.id) }}">
+                                        {{ movie.title }}
+                                    </a>
+                                </h6>
+                                <p class="card-text">{{ movie.release_date }}</p>
                                 <a href="{{ url_for('main.movie', id = movie.id) }}">
-                                    {{ movie.title }}
+                                    <button type="button" class="btn btn-outline-info btn-sm">GO</button>
                                 </a>
-                            </h6>
-                            <p class="card-text">{{ movie.release_date }}</p>
-                            <a href="{{ url_for('main.movie', id = movie.id) }}">
-                                <button type="button" class="btn btn-outline-info btn-sm">GO</button>
-                            </a>
+                                </div>
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
-                  </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <img src="{{ url_for('static', filename = 'images/previous.png') }}">
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <img src="{{ url_for('static', filename = 'images/next.png') }}">
+                    </button>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                    <img src="{{ url_for('static', filename = 'images/previous.png') }}">
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                    <img src="{{ url_for('static', filename = 'images/next.png') }}">
-                </button>
             </div>
+            {% for recommend_movie in recommend_movies %}
+            <div class="item-2">
+                <div class="itme-header">
+                    <h2>{{ recommend_genres[loop.index-1] }}</h2>
+                </div>
+                <div id="carouselExampleControls{{ loop.index }}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <div class="recommend-items">
+                            {% for movie in recommend_movie[0:5] %} 
+                            <div class="card" style="width: 154px;">
+                                <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h6 class="card-title">
+                                    <a href="{{ url_for('main.movie', id = movie.id) }}">
+                                        {{ movie.title }}
+                                    </a>
+                                </h6>
+                                <p class="card-text">{{ movie.release_date }}</p>
+                                <a href="{{ url_for('main.movie', id = movie.id) }}">
+                                    <button type="button" class="btn btn-outline-info btn-sm">GO</button>
+                                </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="recommend-items">
+                            {% for movie in recommend_movie[5:] %} 
+                            <div class="card" style="width: 154px;">
+                                <img src="https://image.tmdb.org/t/p/w154/{{ movie.poster_path }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h6 class="card-title">
+                                    <a href="{{ url_for('main.movie', id = movie.id) }}">
+                                        {{ movie.title }}
+                                    </a>
+                                </h6>
+                                <p class="card-text">{{ movie.release_date }}</p>
+                                <a href="{{ url_for('main.movie', id = movie.id) }}">
+                                    <button type="button" class="btn btn-outline-info btn-sm">GO</button>
+                                </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls{{ loop.index }}" data-bs-slide="prev">
+                        <img src="{{ url_for('static', filename = 'images/previous.png') }}">
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls{{ loop.index }}" data-bs-slide="next">
+                        <img src="{{ url_for('static', filename = 'images/next.png') }}">
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
