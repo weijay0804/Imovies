@@ -31,26 +31,53 @@ def index():
     rowCount = int(Movies.query.count())
     movies = Movies.query.offset(int(rowCount * random.random())).limit(30)
 
-    # TODO 客製化推薦電影
+    movie_genres = Generes.genres_set.copy()   # 電影類別，使用深複製
 
-    movie_genres = Generes.genres_set.copy()   # 電影類別
-
+    # 移除 電視電影類別 因為電影太少
     if '電視電影' in movie_genres:
         movie_genres.remove('電視電影')
 
-    ra_numbers = random.sample(range(0, len(movie_genres)) ,3)  # 產生 3 個隨機數字當 index
+    recommend_movies = []   # 儲存推薦的電影
+    recommend_genres = []   # 儲存推薦電影的類別
 
-    recommend_movies = []
-    recommend_genres = []
+    # 如果使用者登入並且使用者有勾選喜歡的電影類別，就使用使用者勾選的電影類別查詢
+    if current_user.is_authenticated and current_user.favorite_movie_genres:
+        
+        # 將使用者喜歡的類別轉換成 list
+        user_genres = current_user.favorite_movie_genres.split(',')
 
-    for index, genrs_index in enumerate(ra_numbers):
-        genre = movie_genres[genrs_index]
+        # 3 是頁面上要顯示的電影類別數量
+        if len(user_genres) > 3:
 
-        re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).limit(10).all()
+            # 如果使用者喜歡的類別數量大於 3 ，就隨機取 3 個類別
+            ra_number = random.sample(range(0, len(user_genres)), 3)
+            for ra in ra_number:
+                recommend_genres.append(user_genres[ra])
+        else:
+            recommend_genres.extend(user_genres)
+        
+        # 使用使用者喜歡的電影類別查詢，並用 offset 確保隨機
+        for genre in recommend_genres:
+            rowCount = int(Movies.query.filter(Movies.genres.like(f'%{genre}%')).count())
+            user_re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).offset(int(rowCount * random.random())).limit(10).all()
+            recommend_movies.append(list(user_re_movies))
 
+    # 如果使用者選取的電影數量小於 3，或使用者沒有登入
+    if len(recommend_genres) < 3:
 
-        recommend_movies.append(list(re_movies))
-        recommend_genres.append(genre)
+        # 產生 3 個隨機數字當 index
+        ra_numbers = random.sample(range(0, len(movie_genres)) ,3 - len(recommend_genres)) 
+
+        # 使用隨機存取的電影類別查詢，使用 offset 卻保隨機
+        for genrs_index in ra_numbers:
+            genre = movie_genres[genrs_index]
+
+            rowCount = int(Movies.query.filter(Movies.genres.like(f'%{genre}%')).count())
+            re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).offset(int(rowCount * random.random())).limit(10).all()
+
+            recommend_movies.append(list(re_movies))
+            recommend_genres.append(genre)
+
 
     return render_template('main/index.html', movies = movies, recommend_movies = recommend_movies, recommend_genres = recommend_genres)
 
