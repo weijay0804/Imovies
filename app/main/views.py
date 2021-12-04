@@ -60,7 +60,10 @@ def index():
         # 使用使用者喜歡的電影類別查詢，並用 offset 確保隨機
         for genre in recommend_genres:
             rowCount = int(Movies.query.filter(Movies.genres.like(f'%{genre}%')).count()) - 10
-            user_re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).offset(int(rowCount * random.random())).limit(10).all()
+            if rowCount < 0:
+                user_re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).all()
+            else:
+                user_re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).offset(int(rowCount * random.random())).limit(10).all()
             recommend_movies.append(list(user_re_movies))
 
     # 如果使用者選取的電影數量小於 3，或使用者沒有登入
@@ -74,7 +77,10 @@ def index():
             genre = movie_genres[genrs_index]
 
             rowCount = int(Movies.query.filter(Movies.genres.like(f'%{genre}%')).count()) - 10
-            re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).offset(int(rowCount * random.random())).limit(10).all()
+            if rowCount < 0:
+                re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).all()
+            else:
+                re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).offset(int(rowCount * random.random())).limit(10).all()
 
             recommend_movies.append(list(re_movies))
             recommend_genres.append(genre)
