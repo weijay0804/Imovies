@@ -55,11 +55,13 @@
                             從 {{ moment(user.member_since).format('LL') }} 加入 <br>
                             上次登入是 {{ moment(user.last_seen).fromTime(now) }}
                         </li>
+                        {% if current_user == user %}
                         <li class="edit-btn">
                             <a href="{{ url_for('user.edit_profile', id = current_user.id) }}">
                             <button type="button" class="btn btn-outline-secondary">編輯</button>
                             </a>
                         </li>
+                        {% endif %}
                     </ul>
                    
                 </div>

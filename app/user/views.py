@@ -16,7 +16,6 @@ from ..movie_model import Generes, Movies
 
 
 @user.route('/profile/<int:id>')
-@login_required
 def profile(id):
     ''' 使用者個人檔案路由 '''
 

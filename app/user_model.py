@@ -32,6 +32,7 @@ class Comments(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, default = datetime.utcnow, index = True)
+    like = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
 

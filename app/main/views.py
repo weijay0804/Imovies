@@ -149,7 +149,7 @@ def popular():
     return render_template('main/popular.html', pagination = pagination, page = page, movies = movies, args = args)
 
 
-@main.route('/movies/<int:id>', methods = ['GET', 'POST'])
+@main.route('/movies/<int:id>', methods = ['GET'])
 def movie(id):
     ''' 電影詳細資料路由 '''
 
@@ -184,16 +184,6 @@ def movie(id):
     similar_movies = similar_title
     similar_movies.extend(similar_genre)
 
-    
-    # 處理表單
-    if request.method == 'POST':
-        comment_data = request.form.get('comment')
-        comment = Comments(body = comment_data, movie = movie, user = current_user._get_current_object())
-        db.session.add(comment)
-        db.session.commit()
-        flash('評論已經送出')
-
-        return redirect(url_for('main.movie', id = id))
 
     comments = movie.comments.order_by(Comments.timestamp.desc()).all()
 

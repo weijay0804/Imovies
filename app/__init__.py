@@ -42,4 +42,7 @@ def create_app(config_name : str) -> Flask:
     from .user import user as user_blueprint
     app.register_blueprint(user_blueprint, url_prefix = '/user')
 
+    from .comment import comment as comment_blueprint
+    app.register_blueprint(comment_blueprint, url_prefix = '/comment')
+
     return app

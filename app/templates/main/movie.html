@@ -181,7 +181,7 @@
                 <div class="comment-items">
                     {% if current_user.is_authenticated %}
                     <div class="form-container">
-                        <form class="row g-3" action="{{ url_for('main.movie', id = movie.id) }}" method="POST">
+                        <form class="row g-3" action="{{ url_for('comment.comment_movie', id = movie.id) }}" method="POST">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                             <div class="mb-3 row">
                                 <label for="exampleFormControlTextarea1" class="form-label">有什麼想法?</label>
