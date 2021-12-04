@@ -28,8 +28,9 @@ def index():
     ''' 主頁面 '''
 
     # 隨機取資料，確保取出的電影每次都不同
-    rowCount = int(Movies.query.count())
+    rowCount = int(Movies.query.count()) - 30
     movies = Movies.query.offset(int(rowCount * random.random())).limit(30)
+
 
     movie_genres = Generes.genres_set.copy()   # 電影類別，使用深複製
 
@@ -58,7 +59,7 @@ def index():
         
         # 使用使用者喜歡的電影類別查詢，並用 offset 確保隨機
         for genre in recommend_genres:
-            rowCount = int(Movies.query.filter(Movies.genres.like(f'%{genre}%')).count())
+            rowCount = int(Movies.query.filter(Movies.genres.like(f'%{genre}%')).count()) - 10
             user_re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).offset(int(rowCount * random.random())).limit(10).all()
             recommend_movies.append(list(user_re_movies))
 
@@ -72,7 +73,7 @@ def index():
         for genrs_index in ra_numbers:
             genre = movie_genres[genrs_index]
 
-            rowCount = int(Movies.query.filter(Movies.genres.like(f'%{genre}%')).count())
+            rowCount = int(Movies.query.filter(Movies.genres.like(f'%{genre}%')).count()) - 10
             re_movies = Movies.query.filter(Movies.genres.like(f'%{genre}%')).offset(int(rowCount * random.random())).limit(10).all()
 
             recommend_movies.append(list(re_movies))
@@ -166,7 +167,7 @@ def movie(id):
     # 使用 offset 隨機取資料
     if not similar_title or len(similar_title) < similar_movie_numbers:
         movie_genre = movie.genres.split(',')[0]
-        rowCount = int(Movies.query.filter(Movies.genres.like(f'%{movie_genre}%')).count())
+        rowCount = int(Movies.query.filter(Movies.genres.like(f'%{movie_genre}%')).count()) - 8
         similar_genre = Movies.query.filter(
             Movies.genres.like(f'%{movie_genre}%')
         ).offset(int(rowCount * random.random())).limit(similar_movie_numbers - len(similar_title)).all()
