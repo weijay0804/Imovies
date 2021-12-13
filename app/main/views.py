@@ -167,7 +167,7 @@ def movie(id):
 
     j = json.loads(response.text)
 
-    if j.get('results').get('TW'):
+    if j and j.get('results').get('TW'):
         try:
             if j['results'].get('TW').get('flatrate')[0].get('provider_name') == 'Netflix':
                 netflix_link = j['results'].get('TW').get('link')
