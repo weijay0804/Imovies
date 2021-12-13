@@ -107,7 +107,11 @@
                         </li>
                         <li>
                             <div class="btns-container">
-
+                                {% if netflix_link %} 
+                                    <a href="{{ netflix_link }}" target="_blank">
+                                        <button type="button" class="btn btn-outline-danger btn-lg">Netflix</button>
+                                    </a>
+                                {% endif %}
                                 <a href="https://www.imdb.com/title/{{ movie.imdb_id }}/" target="_blank">
                                 <button type="button" class="btn btn-outline-warning btn-lg">IMDb</button>
                                 </a>

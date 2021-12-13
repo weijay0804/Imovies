@@ -4,16 +4,20 @@
 
 '''
 
+import os
 import random
-from flask import render_template, request, redirect, flash, url_for
+import json
+import requests
+from flask import render_template, request, redirect
 from sqlalchemy import or_
 from flask_login import current_user
-from app import db
+from dotenv import load_dotenv
 from . import main
 from ..movie_model import Movies, TopRankMoives, PopularMovies, Generes
 from ..user_model import Comments
 from ..app_function import sort_movies, sort_need_join_movies
 
+load_dotenv()
 
 @main.app_context_processor
 def inject_movie_geners():
@@ -153,7 +157,26 @@ def popular():
 def movie(id):
     ''' 電影詳細資料路由 '''
 
+    api_key = os.environ.get('API_KEY')
+
     movie = Movies.query.get_or_404(id)
+
+    url = f'https://api.themoviedb.org/3/movie/{movie.tmdb_id}/watch/providers?api_key={api_key}'
+
+    response = requests.get(url)
+
+    j = json.loads(response.text)
+
+    if j.get('results').get('TW'):
+        try:
+            if j['results'].get('TW').get('flatrate')[0].get('provider_name') == 'Netflix':
+                netflix_link = j['results'].get('TW').get('link')
+            else:
+                netflix_link = None
+        except:
+            netflix_link = None
+    else:
+        netflix_link = None
 
     similar_movie_numbers = 8   # 相似電影的數量 ( 4 * 2 )
 
@@ -173,10 +196,13 @@ def movie(id):
     # 使用 offset 隨機取資料
     if not similar_title or len(similar_title) < similar_movie_numbers:
         movie_genre = movie.genres.split(',')[0]
-        rowCount = int(Movies.query.filter(Movies.genres.like(f'%{movie_genre}%')).count()) - 8
-        similar_genre = Movies.query.filter(
-            Movies.genres.like(f'%{movie_genre}%')
-        ).offset(int(rowCount * random.random())).limit(similar_movie_numbers - len(similar_title)).all()
+        if int(Movies.query.filter(Movies.genres.like(f'%{movie_genre}%')).count()) >= 8:
+            rowCount = int(Movies.query.filter(Movies.genres.like(f'%{movie_genre}%')).count()) - 8
+            similar_genre = Movies.query.filter(
+                Movies.genres.like(f'%{movie_genre}%')
+            ).offset(int(rowCount * random.random())).limit(similar_movie_numbers - len(similar_title)).all()
+        else:
+            similar_genre = []
     else:
         similar_genre = []
 
@@ -187,7 +213,7 @@ def movie(id):
 
     comments = movie.comments.order_by(Comments.timestamp.desc()).all()
 
-    return render_template('main/movie.html', movie = movie, comments = comments, similar_movies = similar_movies)
+    return render_template('main/movie.html', movie = movie, comments = comments, similar_movies = similar_movies, netflix_link = netflix_link)
 
 @main.route('/search',)
 def search():
